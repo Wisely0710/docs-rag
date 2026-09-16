@@ -1,0 +1,16 @@
+# Tooling configuration only — this repo is a service, not an installable package.
+# Runtime dependencies live in requirements.txt / requirements-dev.txt.
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+files = ["ragconfig.py", "corpus.py", "indexer.py", "searchlib.py", "ragquery.py", "serve.py"]
+ignore_missing_imports = true

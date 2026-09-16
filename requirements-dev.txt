@@ -1,0 +1,6 @@
+pytest>=8.0
+ruff>=0.6
+mypy>=1.10
+# ships the shellcheck binary used for client/*.sh (pinned: a newer shellcheck adds
+# checks, which would otherwise turn CI red without a code change)
+shellcheck-py==0.11.0.1

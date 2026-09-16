@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- launchd job template for one docs-RAG corpus instance.
+
+     Copy to ~/Library/LaunchAgents/com.<corpus>.docs-rag.plist and replace every
+     __PLACEHOLDER__; one agent per corpus, each with its own RAG_CORPUS and port.
+     RAG_CORPUS is mandatory — the service refuses to guess (see ragconfig.py).
+
+       launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.<corpus>.docs-rag.plist
+       launchctl kickstart -k gui/$(id -u)/com.<corpus>.docs-rag
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.__CORPUS__.docs-rag</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__RAG_DIR__/.venv/bin/python</string>
+    <string>serve.py</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>RAG_CORPUS</key>
+    <string>__CORPUS__</string>
+    <key>RAG_PORT</key>
+    <string>__PORT__</string>
+  </dict>
+  <key>WorkingDirectory</key>
+  <string>__RAG_DIR__</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+  <key>StandardOutPath</key>
+  <string>__RAG_DIR__/logs/__CORPUS__.serve.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__RAG_DIR__/logs/__CORPUS__.serve.err.log</string>
+</dict>
+</plist>

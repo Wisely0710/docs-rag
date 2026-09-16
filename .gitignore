@@ -1,0 +1,23 @@
+# ── 機密／環境（絕不入庫）
+.env
+.env.*
+
+# ── 虛擬環境與快取
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── 部署期產物（語料／索引／日誌不屬版控；一個 corpus 一個 data-<corpus>）
+corpus/
+data/
+data-*/
+logs/
+
+# ── 前 git 時期的手工備份（已由 git 歷史取代）
+*.bak-*
+
+# Deployment data: the real corpus config is not tracked (see corpora.example.json)
+corpora.json

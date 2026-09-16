@@ -1,0 +1,33 @@
+{
+  "_comment": [
+    "Example corpus config. Copy this file to corpora.json in RAG_DIR (default ~/rag-service)",
+    "and edit it; corpora.json itself is deployment data and is not tracked.",
+    "",
+    "Required keys (paths are relative to RAG_DIR unless absolute):",
+    "  corpus_dir      where the markdown corpus lives (env RAG_CORPUS_DIR overrides it)",
+    "  data_dir        where index.sqlite and .index.lock are written",
+    "  top_files       markdown files at the CORPUS ROOT, e.g. AGENTS.md",
+    "  doc_root_files  markdown files at the ROOT OF THE docs TREE, i.e. resolved as",
+    "                  <corpus_dir>/docs/<name> — not <corpus_dir>/<name>",
+    "  roots           directories (corpus-relative) scanned recursively for *.md",
+    "  exclude_dirs    directory names skipped anywhere inside roots (e.g. archive)",
+    "",
+    "Optional keys:",
+    "  server_name       MCP server name (default: \"<corpus>-docs-rag\")",
+    "  system_note       sentence appended to the retrieve tool description",
+    "  git_origin_repo   local checkout of the source repo; refresh.sh reads its origin",
+    "                    URL to clone/fetch a git-backed corpus",
+    "",
+    "Only *.md is indexed, and a missing entry is skipped silently rather than failing."
+  ],
+  "example": {
+    "corpus_dir": "corpus/example",
+    "data_dir": "data-example",
+    "top_files": ["AGENTS.md"],
+    "doc_root_files": ["README.md"],
+    "roots": ["docs/notes"],
+    "exclude_dirs": ["archive"],
+    "server_name": "example-docs-rag",
+    "system_note": "回答引用時請標明回傳的檔案路徑。"
+  }
+}

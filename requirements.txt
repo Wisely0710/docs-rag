@@ -1,0 +1,5 @@
+# Runtime dependencies, pinned to the versions this deployment runs.
+# Optional: sqlite-vec (vector KNN — falls back to numpy, then to FTS-only) and numpy.
+mcp==2.2.0
+sqlite-vec==0.1.9
+numpy==2.4.6
