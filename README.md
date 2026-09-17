@@ -136,7 +136,9 @@ catches up on the next run.
 .venv/bin/mypy                    # type check (config in pyproject.toml)
 .venv/bin/python -m pytest        # tests (unit + end-to-end, no network)
 .venv/bin/shellcheck client/*.sh  # shell check for the clients
+.venv/bin/pre-commit run --all-files  # secret scan (baseline: .secrets.baseline)
 ```
 
-CI runs the same gates, plus `shellcheck` on the client scripts
-(`.github/workflows/ci.yml`). Licensed under MIT.
+CI runs the same gates, plus `shellcheck` on the client scripts and the `detect-secrets` scan
+(`.github/workflows/ci.yml`); install the commit hook once with `pre-commit install`.
+Licensed under MIT.

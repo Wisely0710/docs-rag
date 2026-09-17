@@ -28,5 +28,7 @@ jobs:
         run: mypy
       - name: Shellcheck (client scripts)
         run: shellcheck client/*.sh
+      - name: Secret scan
+        run: pre-commit run --all-files
       - name: Tests
         run: pytest -q
