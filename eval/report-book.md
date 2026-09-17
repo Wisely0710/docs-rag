@@ -1,7 +1,7 @@
 # Retrieval evaluation — `book` corpus
 
 - Golden set: `eval/golden/book.jsonl` (47 labelled queries, k=10)
-- Corpus: `book` under `eval/.work` — 112 files / 4029 chunks (head 1500248d8f230566e4ec9f27fcbb8fe9e2898ab1)
+- Corpus: `book` under `eval/.work` — 112 files / 4029 chunks (head 1500248d)
 - Embeddings: text-embedding-nomic-embed-text-v1.5 (lmstudio backend), 768-d; ranking: vector KNN + FTS5 trigram fused with RRF (k=60)
 
 ## Summary
@@ -12,8 +12,8 @@
 | recall@3 | 0.8723 |
 | recall@5 | 0.9149 |
 | MRR@10 | 0.8252 |
-| latency p50 (ms) | 104.7 |
-| latency p95 (ms) | 156.8 |
+| latency p50 (ms) | 99.1 |
+| latency p95 (ms) | 303.4 |
 
 By family:
 
@@ -85,7 +85,7 @@ By family:
 
 ```
 sqlite-vec=True changed_files=112 removed=0
-files=112 chunks=4029 chars=1241370 est_tokens=2358604 tok_per_char=1.9 elapsed=136.42s corpus_head=1500248d8f230566e4ec9f27fcbb8fe9e2898ab1
+files=112 chunks=4029 chars=1241370 est_tokens=2358604 tok_per_char=1.9 elapsed=109.21s corpus_head=1500248d
   + docs/book/SUMMARY.md (25 chunks)
   + docs/book/appendix-00.md (1 chunks)
   + docs/book/appendix-01-keywords.md (17 chunks)

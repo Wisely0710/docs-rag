@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -215,6 +216,11 @@ def display_location(rag_dir: Path) -> str:
         return f"<RAG_DIR>/{rag_dir.name}"
 
 
+def shorten_hashes(text: str) -> str:
+    """Trim 40-char hex digests to 8 chars: scanners read them as high-entropy strings."""
+    return re.sub(r"\b[0-9a-f]{40}\b", lambda match: match.group(0)[:8], text)
+
+
 def markdown_report(
     *,
     golden: Path,
@@ -279,7 +285,7 @@ def markdown_report(
             )
     else:
         lines.append("- none — every labelled query placed its document inside the top-k.")
-    lines += ["", "## Indexer output", "", "```", index_log or "(skipped)", "```", ""]
+    lines += ["", "## Indexer output", "", "```", shorten_hashes(index_log) or "(skipped)", "```", ""]
     return "\n".join(lines)
 
 
@@ -315,11 +321,17 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     payload = evaluate(rows, k=max(1, min(args.k, 10)))
     payload["by_family"] = family_metrics(payload["results"], payload["metrics"]["k"])
+    stats = searchlib.corpus_stats()
+    if stats.get("corpus_head"):
+        # Keep generated artefacts free of full 40-char hashes: secret scanners read
+        # them as high-entropy strings, and the full commit is recorded by
+        # fetch_corpus.sh in the (uncommitted) .corpus_source.json marker anyway.
+        stats["corpus_head"] = str(stats["corpus_head"])[:8]
     payload["corpus"] = {
         "name": args.corpus,
         "backend": args.backend if args.backend != "none" else os.environ.get("RAG_EMBED_BACKEND", "lmstudio"),
         "model": os.environ.get("EMBED_MODEL", "text-embedding-nomic-embed-text-v1.5"),
-        "stats": searchlib.corpus_stats(),
+        "stats": stats,
         "label_warnings": warnings,
     }
 

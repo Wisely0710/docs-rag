@@ -10,8 +10,8 @@
     },
     "mrr": 0.8252,
     "latency_ms": {
-      "p50": 104.7,
-      "p95": 156.8
+      "p50": 99.1,
+      "p95": 303.4
     }
   },
   "results": [
@@ -22,7 +22,7 @@
       "expected": "docs/book/ch04-01-what-is-ownership.md",
       "rank": 1,
       "top1": "docs/book/ch04-01-what-is-ownership.md",
-      "ms": 195.2,
+      "ms": 475.5,
       "hits": 6
     },
     {
@@ -32,7 +32,7 @@
       "expected": "docs/book/ch04-02-references-and-borrowing.md",
       "rank": 5,
       "top1": "docs/book/ch15-04-rc.md",
-      "ms": 96.0,
+      "ms": 544.9,
       "hits": 6
     },
     {
@@ -42,7 +42,7 @@
       "expected": "docs/book/ch04-03-slices.md",
       "rank": 1,
       "top1": "docs/book/ch04-03-slices.md",
-      "ms": 104.9,
+      "ms": 114.7,
       "hits": 4
     },
     {
@@ -52,7 +52,7 @@
       "expected": "docs/book/ch03-01-variables-and-mutability.md",
       "rank": 1,
       "top1": "docs/book/ch03-01-variables-and-mutability.md",
-      "ms": 93.5,
+      "ms": 129.3,
       "hits": 4
     },
     {
@@ -62,7 +62,7 @@
       "expected": "docs/book/ch03-02-data-types.md",
       "rank": 1,
       "top1": "docs/book/ch03-02-data-types.md",
-      "ms": 109.1,
+      "ms": 95.7,
       "hits": 8
     },
     {
@@ -72,7 +72,7 @@
       "expected": "docs/book/ch03-05-control-flow.md",
       "rank": 1,
       "top1": "docs/book/ch03-05-control-flow.md",
-      "ms": 80.1,
+      "ms": 105.8,
       "hits": 5
     },
     {
@@ -82,7 +82,7 @@
       "expected": "docs/book/ch02-00-guessing-game-tutorial.md",
       "rank": 1,
       "top1": "docs/book/ch02-00-guessing-game-tutorial.md",
-      "ms": 97.1,
+      "ms": 126.2,
       "hits": 2
     },
     {
@@ -92,7 +92,7 @@
       "expected": "docs/book/ch05-01-defining-structs.md",
       "rank": 1,
       "top1": "docs/book/ch05-01-defining-structs.md",
-      "ms": 156.8,
+      "ms": 100.4,
       "hits": 3
     },
     {
@@ -102,7 +102,7 @@
       "expected": "docs/book/ch05-03-method-syntax.md",
       "rank": 2,
       "top1": "docs/book/ch10-02-traits.md",
-      "ms": 89.5,
+      "ms": 151.7,
       "hits": 2
     },
     {
@@ -112,7 +112,7 @@
       "expected": "docs/book/ch06-01-defining-an-enum.md",
       "rank": 1,
       "top1": "docs/book/ch06-01-defining-an-enum.md",
-      "ms": 98.4,
+      "ms": 103.1,
       "hits": 2
     },
     {
@@ -122,7 +122,7 @@
       "expected": "docs/book/ch06-02-match.md",
       "rank": 2,
       "top1": "docs/book/ch19-01-all-the-places-for-patterns.md",
-      "ms": 111.8,
+      "ms": 96.4,
       "hits": 5
     },
     {
@@ -132,7 +132,7 @@
       "expected": "docs/book/ch06-03-if-let.md",
       "rank": 2,
       "top1": "docs/book/ch19-01-all-the-places-for-patterns.md",
-      "ms": 116.3,
+      "ms": 130.3,
       "hits": 5
     },
     {
@@ -142,7 +142,7 @@
       "expected": "docs/book/ch07-02-defining-modules-to-control-scope-and-privacy.md",
       "rank": 1,
       "top1": "docs/book/ch07-02-defining-modules-to-control-scope-and-privacy.md",
-      "ms": 96.1,
+      "ms": 303.4,
       "hits": 6
     },
     {
@@ -152,7 +152,7 @@
       "expected": "docs/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.md",
       "rank": 1,
       "top1": "docs/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.md",
-      "ms": 111.5,
+      "ms": 90.0,
       "hits": 5
     },
     {
@@ -162,7 +162,7 @@
       "expected": "docs/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.md",
       "rank": 2,
       "top1": "docs/book/SUMMARY.md",
-      "ms": 103.2,
+      "ms": 121.4,
       "hits": 3
     },
     {
@@ -172,7 +172,7 @@
       "expected": "docs/book/ch07-01-packages-and-crates.md",
       "rank": 1,
       "top1": "docs/book/ch07-01-packages-and-crates.md",
-      "ms": 204.0,
+      "ms": 130.2,
       "hits": 5
     },
     {
@@ -182,7 +182,7 @@
       "expected": "docs/book/ch08-01-vectors.md",
       "rank": 1,
       "top1": "docs/book/ch08-01-vectors.md",
-      "ms": 121.4,
+      "ms": 115.3,
       "hits": 6
     },
     {
@@ -192,7 +192,7 @@
       "expected": "docs/book/ch08-02-strings.md",
       "rank": 1,
       "top1": "docs/book/ch08-02-strings.md",
-      "ms": 145.0,
+      "ms": 135.1,
       "hits": 2
     },
     {
@@ -202,7 +202,7 @@
       "expected": "docs/book/ch08-03-hash-maps.md",
       "rank": 1,
       "top1": "docs/book/ch08-03-hash-maps.md",
-      "ms": 94.1,
+      "ms": 91.6,
       "hits": 3
     },
     {
@@ -212,7 +212,7 @@
       "expected": "docs/book/ch09-02-recoverable-errors-with-result.md",
       "rank": 1,
       "top1": "docs/book/ch09-02-recoverable-errors-with-result.md",
-      "ms": 104.4,
+      "ms": 100.2,
       "hits": 4
     },
     {
@@ -222,7 +222,7 @@
       "expected": "docs/book/ch09-03-to-panic-or-not-to-panic.md",
       "rank": 1,
       "top1": "docs/book/ch09-03-to-panic-or-not-to-panic.md",
-      "ms": 126.3,
+      "ms": 92.7,
       "hits": 4
     },
     {
@@ -232,7 +232,7 @@
       "expected": "docs/book/ch10-01-syntax.md",
       "rank": 1,
       "top1": "docs/book/ch10-01-syntax.md",
-      "ms": 102.5,
+      "ms": 95.9,
       "hits": 4
     },
     {
@@ -242,7 +242,7 @@
       "expected": "docs/book/ch10-02-traits.md",
       "rank": 1,
       "top1": "docs/book/ch10-02-traits.md",
-      "ms": 98.4,
+      "ms": 84.8,
       "hits": 3
     },
     {
@@ -252,7 +252,7 @@
       "expected": "docs/book/ch10-03-lifetime-syntax.md",
       "rank": 1,
       "top1": "docs/book/ch10-03-lifetime-syntax.md",
-      "ms": 104.7,
+      "ms": 96.3,
       "hits": 3
     },
     {
@@ -262,7 +262,7 @@
       "expected": "docs/book/ch11-01-writing-tests.md",
       "rank": 1,
       "top1": "docs/book/ch11-01-writing-tests.md",
-      "ms": 102.4,
+      "ms": 84.1,
       "hits": 2
     },
     {
@@ -272,7 +272,7 @@
       "expected": "docs/book/ch11-03-test-organization.md",
       "rank": 1,
       "top1": "docs/book/ch11-03-test-organization.md",
-      "ms": 107.5,
+      "ms": 89.7,
       "hits": 1
     },
     {
@@ -282,7 +282,7 @@
       "expected": "docs/book/ch13-01-closures.md",
       "rank": 1,
       "top1": "docs/book/ch13-01-closures.md",
-      "ms": 100.1,
+      "ms": 85.9,
       "hits": 3
     },
     {
@@ -292,7 +292,7 @@
       "expected": "docs/book/ch13-02-iterators.md",
       "rank": 1,
       "top1": "docs/book/ch13-02-iterators.md",
-      "ms": 99.6,
+      "ms": 92.9,
       "hits": 2
     },
     {
@@ -302,7 +302,7 @@
       "expected": "docs/book/ch14-01-release-profiles.md",
       "rank": 1,
       "top1": "docs/book/ch14-01-release-profiles.md",
-      "ms": 109.7,
+      "ms": 88.5,
       "hits": 3
     },
     {
@@ -312,7 +312,7 @@
       "expected": "docs/book/ch15-01-box.md",
       "rank": 1,
       "top1": "docs/book/ch15-01-box.md",
-      "ms": 119.4,
+      "ms": 105.2,
       "hits": 1
     },
     {
@@ -322,7 +322,7 @@
       "expected": "docs/book/ch15-03-drop.md",
       "rank": 1,
       "top1": "docs/book/ch15-03-drop.md",
-      "ms": 106.1,
+      "ms": 119.2,
       "hits": 3
     },
     {
@@ -332,7 +332,7 @@
       "expected": "docs/book/ch15-04-rc.md",
       "rank": 1,
       "top1": "docs/book/ch15-04-rc.md",
-      "ms": 156.6,
+      "ms": 99.1,
       "hits": 5
     },
     {
@@ -342,7 +342,7 @@
       "expected": "docs/book/ch15-05-interior-mutability.md",
       "rank": 1,
       "top1": "docs/book/ch15-05-interior-mutability.md",
-      "ms": 136.6,
+      "ms": 95.6,
       "hits": 3
     },
     {
@@ -352,7 +352,7 @@
       "expected": "docs/book/ch16-01-threads.md",
       "rank": 1,
       "top1": "docs/book/ch16-01-threads.md",
-      "ms": 108.9,
+      "ms": 83.7,
       "hits": 3
     },
     {
@@ -362,7 +362,7 @@
       "expected": "docs/book/ch16-02-message-passing.md",
       "rank": 1,
       "top1": "docs/book/ch16-02-message-passing.md",
-      "ms": 109.6,
+      "ms": 96.4,
       "hits": 4
     },
     {
@@ -372,7 +372,7 @@
       "expected": "docs/book/ch16-03-shared-state.md",
       "rank": 3,
       "top1": "docs/book/ch21-02-multithreaded.md",
-      "ms": 93.1,
+      "ms": 83.8,
       "hits": 5
     },
     {
@@ -382,7 +382,7 @@
       "expected": "docs/book/ch17-01-futures-and-syntax.md",
       "rank": 1,
       "top1": "docs/book/ch17-01-futures-and-syntax.md",
-      "ms": 112.2,
+      "ms": 106.1,
       "hits": 4
     },
     {
@@ -392,7 +392,7 @@
       "expected": "docs/book/ch18-02-trait-objects.md",
       "rank": 1,
       "top1": "docs/book/ch18-02-trait-objects.md",
-      "ms": 97.6,
+      "ms": 89.4,
       "hits": 6
     },
     {
@@ -402,7 +402,7 @@
       "expected": "docs/book/ch19-02-refutability.md",
       "rank": 1,
       "top1": "docs/book/ch19-02-refutability.md",
-      "ms": 96.4,
+      "ms": 86.7,
       "hits": 4
     },
     {
@@ -412,7 +412,7 @@
       "expected": "docs/book/ch20-01-unsafe-rust.md",
       "rank": 1,
       "top1": "docs/book/ch20-01-unsafe-rust.md",
-      "ms": 108.0,
+      "ms": 104.9,
       "hits": 1
     },
     {
@@ -422,7 +422,7 @@
       "expected": "docs/book/ch20-05-macros.md",
       "rank": 1,
       "top1": "docs/book/ch20-05-macros.md",
-      "ms": 101.8,
+      "ms": 129.5,
       "hits": 1
     },
     {
@@ -432,7 +432,7 @@
       "expected": "docs/book/ch04-01-what-is-ownership.md",
       "rank": 0,
       "top1": "docs/book/appendix-06-translation.md",
-      "ms": 106.1,
+      "ms": 102.3,
       "hits": 9
     },
     {
@@ -442,7 +442,7 @@
       "expected": "docs/book/ch10-03-lifetime-syntax.md",
       "rank": 0,
       "top1": "docs/book/ch16-03-shared-state.md",
-      "ms": 147.6,
+      "ms": 97.7,
       "hits": 6
     },
     {
@@ -452,7 +452,7 @@
       "expected": "docs/book/ch08-03-hash-maps.md",
       "rank": 1,
       "top1": "docs/book/ch08-03-hash-maps.md",
-      "ms": 101.5,
+      "ms": 92.7,
       "hits": 2
     },
     {
@@ -462,7 +462,7 @@
       "expected": "docs/book/ch16-01-threads.md",
       "rank": 0,
       "top1": "docs/book/ch16-04-extensible-concurrency-sync-and-send.md",
-      "ms": 103.3,
+      "ms": 80.5,
       "hits": 8
     },
     {
@@ -472,7 +472,7 @@
       "expected": "docs/book/ch11-03-test-organization.md",
       "rank": 0,
       "top1": "docs/book/ch07-02-defining-modules-to-control-scope-and-privacy.md",
-      "ms": 97.0,
+      "ms": 104.0,
       "hits": 8
     },
     {
@@ -482,7 +482,7 @@
       "expected": "docs/book/ch06-02-match.md",
       "rank": 4,
       "top1": "docs/book/ch19-03-pattern-syntax.md",
-      "ms": 103.0,
+      "ms": 95.0,
       "hits": 6
     }
   ],
@@ -509,8 +509,8 @@
     "stats": {
       "files": 112,
       "chunks": 4029,
-      "last_indexed_ts": "1789637472",
-      "corpus_head": "1500248d8f230566e4ec9f27fcbb8fe9e2898ab1",
+      "last_indexed_ts": "1789637778",
+      "corpus_head": "1500248d",
       "synced_at": "2026-09-17T09:24:09Z",
       "dirty": false
     },
