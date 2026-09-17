@@ -3,7 +3,7 @@
 
 Usage: python3 smoke_raw.py <url> <query>
 Prints tool list then top results for the query. Works from machines without the
-mcp SDK (e.g. the Intel Mac) to prove LAN reachability.
+mcp SDK to prove LAN reachability.
 """
 from __future__ import annotations
 

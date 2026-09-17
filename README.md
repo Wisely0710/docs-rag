@@ -39,6 +39,9 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt -r requiremen
 bash demo.sh          # builds a synthetic corpus in a temp dir, indexes it, queries it
 ```
 
+> Intel (x86_64) macOS: the latest `cryptography` wheel release has no x86_64 build;
+> pin it explicitly — `pip install 'cryptography==48.0.1' -r requirements.txt -r requirements-dev.txt`.
+
 `demo.sh` sets `RAG_EMBED_BACKEND=stub`, a deterministic hashed bag-of-tokens embedding, so
 the whole pipeline runs offline. It writes nothing outside a `mktemp` directory.
 
