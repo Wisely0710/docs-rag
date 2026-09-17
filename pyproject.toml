@@ -12,5 +12,5 @@ target-version = "py311"
 
 [tool.mypy]
 python_version = "3.11"
-files = ["ragconfig.py", "corpus.py", "indexer.py", "searchlib.py", "ragquery.py", "serve.py"]
+files = ["ragconfig.py", "corpus.py", "indexer.py", "searchlib.py", "ragquery.py", "serve.py", "eval/run_eval.py"]
 ignore_missing_imports = true

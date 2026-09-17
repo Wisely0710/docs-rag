@@ -16,8 +16,15 @@ data/
 data-*/
 logs/
 
+# ... except the eval fixture, which is a committed test corpus (see eval/README.md)
+!eval/fixture/corpus/
+!eval/fixture/corpora.json
+
 # ── 前 git 時期的手工備份（已由 git 歷史取代）
 *.bak-*
 
 # Deployment data: the real corpus config is not tracked (see corpora.example.json)
 corpora.json
+
+# Evaluation work dir (corpus checkout + index; see eval/README.md)
+eval/.work/

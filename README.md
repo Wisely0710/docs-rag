@@ -119,6 +119,33 @@ catches up on the next run.
     --host rag-host --service-dir /srv/docs-rag
 ```
 
+## Evaluation
+
+`eval/` measures retrieval quality against a labelled query set: the real indexer
+builds the index, the real `retrieve` path answers, and the harness reports recall@k,
+MRR and latency. The published run uses [`rust-lang/book`](https://github.com/rust-lang/book)
+(112 markdown files, commit pinned in the report) with `text-embedding-nomic-embed-text-v1.5`:
+
+| family | queries | recall@1 | recall@3 | recall@5 | MRR |
+|---|---|---|---|---|---|
+| en | 41 | 0.8537 | 0.9756 | 1.0 | 0.9154 |
+| zh (informational) | 6 | 0.1667 | 0.1667 | 0.3333 | 0.2083 |
+| all | 47 | 0.766 | 0.8723 | 0.9149 | 0.8252 |
+
+Cross-lingual retrieval (Chinese question, English corpus) is the clear weak spot. The
+per-query table, the misses and the error analysis live in [`eval/report-book.md`](eval/report-book.md)
+and [`eval/README.md`](eval/README.md); reproduce with:
+
+```bash
+./eval/fetch_corpus.sh
+.venv/bin/python eval/run_eval.py --rag-dir eval/.work --corpus book \
+    --golden eval/golden/book.jsonl --k 10 --backend lmstudio --fresh --report eval/report-book.md
+```
+
+CI runs the harness offline on a fixture corpus (stub embeddings) with a `--min-recall`
+gate, so a metric computation or label-loading regression fails the build without a
+model server.
+
 ## What it does not do
 
 - No reranking, no query rewriting, no LLM in the retrieval path — ranking is deterministic.

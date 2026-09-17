@@ -1,0 +1,47 @@
+{"id": "own-1", "family": "en", "query": "How does Rust manage memory without a garbage collector - stack versus heap?", "expected": "docs/book/ch04-01-what-is-ownership.md", "evidence": "the Stack and the Heap"}
+{"id": "own-2", "family": "en", "query": "What are the rules for mutable references and how does borrowing prevent data races?", "expected": "docs/book/ch04-02-references-and-borrowing.md", "evidence": "dangling reference"}
+{"id": "own-3", "family": "en", "query": "How do string slices and the slice type let a function accept parts of a string?", "expected": "docs/book/ch04-03-slices.md", "evidence": "string slice"}
+{"id": "var-1", "family": "en", "query": "Variables are immutable by default: how do I make one mutable, and what is shadowing?", "expected": "docs/book/ch03-01-variables-and-mutability.md", "evidence": "shadowing"}
+{"id": "type-1", "family": "en", "query": "Which scalar and compound data types exist, including tuples and arrays?", "expected": "docs/book/ch03-02-data-types.md", "evidence": "compound types"}
+{"id": "ctrl-1", "family": "en", "query": "How do if expressions plus loop, while and for control flow work?", "expected": "docs/book/ch03-05-control-flow.md", "evidence": "for loop"}
+{"id": "game-1", "family": "en", "query": "Walk through the guessing game: secret number, the rand crate and reading input", "expected": "docs/book/ch02-00-guessing-game-tutorial.md", "evidence": "rand"}
+{"id": "struct-1", "family": "en", "query": "How do I define a struct and use field init shorthand?", "expected": "docs/book/ch05-01-defining-structs.md", "evidence": "field init shorthand"}
+{"id": "method-1", "family": "en", "query": "How does method syntax work with impl blocks and a self parameter?", "expected": "docs/book/ch05-03-method-syntax.md", "evidence": "method syntax"}
+{"id": "enum-1", "family": "en", "query": "How do I define an enum whose variants hold data, like IpAddrKind?", "expected": "docs/book/ch06-01-defining-an-enum.md", "evidence": "IpAddrKind"}
+{"id": "match-1", "family": "en", "query": "How does a match expression handle every case and what is the catch-all pattern?", "expected": "docs/book/ch06-02-match.md", "evidence": "catch-all"}
+{"id": "iflet-1", "family": "en", "query": "How do I handle a single pattern concisely with if let?", "expected": "docs/book/ch06-03-if-let.md", "evidence": "if let"}
+{"id": "mod-1", "family": "en", "query": "How do modules control scope and privacy in a growing project?", "expected": "docs/book/ch07-02-defining-modules-to-control-scope-and-privacy.md", "evidence": "privacy"}
+{"id": "paths-1", "family": "en", "query": "How do paths refer to an item in the module tree?", "expected": "docs/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.md", "evidence": "paths"}
+{"id": "use-1", "family": "en", "query": "How do I bring paths into scope with the use keyword, including the glob operator?", "expected": "docs/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.md", "evidence": "glob operator"}
+{"id": "pkg-1", "family": "en", "query": "How do packages and crates relate, and what separates a binary from a library crate?", "expected": "docs/book/ch07-01-packages-and-crates.md", "evidence": "crate"}
+{"id": "vec-1", "family": "en", "query": "How do I store a list of values in a Vec and read elements out of it?", "expected": "docs/book/ch08-01-vectors.md", "evidence": "Vec<T>"}
+{"id": "str-1", "family": "en", "query": "Why is a String UTF-8 encoded and why can I not index it by byte?", "expected": "docs/book/ch08-02-strings.md", "evidence": "UTF-8"}
+{"id": "map-1", "family": "en", "query": "How do I store key-value pairs in a HashMap and who owns the keys?", "expected": "docs/book/ch08-03-hash-maps.md", "evidence": "HashMap"}
+{"id": "result-1", "family": "en", "query": "How do I propagate errors with the question-mark operator in a function returning Result?", "expected": "docs/book/ch09-02-recoverable-errors-with-result.md", "evidence": "propagating"}
+{"id": "panic-1", "family": "en", "query": "When should I panic instead of returning an error, and why avoid putting a program in a bad state?", "expected": "docs/book/ch09-03-to-panic-or-not-to-panic.md", "evidence": "bad state"}
+{"id": "generic-1", "family": "en", "query": "How do I write a generic function using type parameters?", "expected": "docs/book/ch10-01-syntax.md", "evidence": "type parameter"}
+{"id": "trait-1", "family": "en", "query": "How do trait bounds and default implementations work?", "expected": "docs/book/ch10-02-traits.md", "evidence": "trait bounds"}
+{"id": "lifetime-1", "family": "en", "query": "How do lifetime annotations keep references valid?", "expected": "docs/book/ch10-03-lifetime-syntax.md", "evidence": "lifetime"}
+{"id": "test-1", "family": "en", "query": "How do I write a unit test with the #[test] attribute and assert_eq macro?", "expected": "docs/book/ch11-01-writing-tests.md", "evidence": "#[test]"}
+{"id": "test-org-1", "family": "en", "query": "Where do integration tests live and how is the tests directory organised?", "expected": "docs/book/ch11-03-test-organization.md", "evidence": "integration tests"}
+{"id": "closure-1", "family": "en", "query": "How do closures capture their environment and implement the Fn traits?", "expected": "docs/book/ch13-01-closures.md", "evidence": "closure"}
+{"id": "iter-1", "family": "en", "query": "How do iterator adapters such as map and filter evaluate lazily?", "expected": "docs/book/ch13-02-iterators.md", "evidence": "iterator"}
+{"id": "profile-1", "family": "en", "query": "How do release profiles customise optimisation and debug settings?", "expected": "docs/book/ch14-01-release-profiles.md", "evidence": "release profile"}
+{"id": "box-1", "family": "en", "query": "How does Box let me store recursive types such as a cons list?", "expected": "docs/book/ch15-01-box.md", "evidence": "Box<T>"}
+{"id": "drop-1", "family": "en", "query": "How does running code on cleanup work with the Drop trait?", "expected": "docs/book/ch15-03-drop.md", "evidence": "Running Code on Cleanup"}
+{"id": "rc-1", "family": "en", "query": "How does reference counting with Rc share ownership between values?", "expected": "docs/book/ch15-04-rc.md", "evidence": "Rc<T>"}
+{"id": "refcell-1", "family": "en", "query": "How does RefCell provide interior mutability at runtime?", "expected": "docs/book/ch15-05-interior-mutability.md", "evidence": "RefCell"}
+{"id": "thread-1", "family": "en", "query": "How do I spawn a thread and wait for it to finish with join?", "expected": "docs/book/ch16-01-threads.md", "evidence": "thread::spawn"}
+{"id": "chan-1", "family": "en", "query": "How do channels transfer messages between threads with mpsc?", "expected": "docs/book/ch16-02-message-passing.md", "evidence": "mpsc"}
+{"id": "mutex-1", "family": "en", "query": "How do Mutex and Arc let several threads share state safely?", "expected": "docs/book/ch16-03-shared-state.md", "evidence": "Mutex"}
+{"id": "async-1", "family": "en", "query": "What is a future and how do async and await work?", "expected": "docs/book/ch17-01-futures-and-syntax.md", "evidence": "Future"}
+{"id": "traitobj-1", "family": "en", "query": "How do trait objects with dyn enable dynamic dispatch?", "expected": "docs/book/ch18-02-trait-objects.md", "evidence": "dyn"}
+{"id": "refute-1", "family": "en", "query": "What does refutability mean for patterns in let bindings versus match arms?", "expected": "docs/book/ch19-02-refutability.md", "evidence": "refutable"}
+{"id": "unsafe-1", "family": "en", "query": "How do I use unsafe Rust for raw pointers and calls to unsafe functions?", "expected": "docs/book/ch20-01-unsafe-rust.md", "evidence": "unsafe"}
+{"id": "macro-1", "family": "en", "query": "How do I declare a macro with macro_rules?", "expected": "docs/book/ch20-05-macros.md", "evidence": "macro_rules!"}
+{"id": "zh-own", "family": "zh", "query": "所有權的規則是什麼？堆疊與堆積的差別在哪裡？", "expected": "docs/book/ch04-01-what-is-ownership.md", "evidence": "the Stack and the Heap"}
+{"id": "zh-lifetime", "family": "zh", "query": "如何在函式簽名中標註生命週期，讓引用保持有效？", "expected": "docs/book/ch10-03-lifetime-syntax.md", "evidence": "lifetime"}
+{"id": "zh-hashmap", "family": "zh", "query": "怎麼用 HashMap 儲存鍵值對？鍵的擁有權歸誰？", "expected": "docs/book/ch08-03-hash-maps.md", "evidence": "HashMap"}
+{"id": "zh-thread", "family": "zh", "query": "如何建立執行緒並等待它結束？", "expected": "docs/book/ch16-01-threads.md", "evidence": "thread::spawn"}
+{"id": "zh-test", "family": "zh", "query": "單元測試與整合測試分別放在哪裡、怎麼組織？", "expected": "docs/book/ch11-03-test-organization.md", "evidence": "integration tests"}
+{"id": "zh-match", "family": "zh", "query": "match 如何處理所有可能情況？萬用模式是什麼？", "expected": "docs/book/ch06-02-match.md", "evidence": "catch-all"}

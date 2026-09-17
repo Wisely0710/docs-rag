@@ -1,0 +1,4 @@
+{"id": "fix-rrf", "family": "en", "query": "how are the two rankers fused without score calibration?", "expected": "retrieval.md", "evidence": "reciprocal rank"}
+{"id": "fix-index", "family": "en", "query": "how does the indexer decide which files to re-chunk?", "expected": "indexing.md", "evidence": "sha256"}
+{"id": "fix-scope", "family": "en", "query": "which keys must the corpus config declare and what is mandatory?", "expected": "scope.md", "evidence": "RAG_CORPUS"}
+{"id": "fix-client", "family": "en", "query": "what does the sync client refuse to do?", "expected": "clients.md", "evidence": "refuses any"}
