@@ -1,0 +1,13 @@
+{
+  "note": "Spot-check by the coding agent that built this harness (an LLM review, not a human expert; the reviewer also wrote the reference answers, so it checks judge behaviour rather than reference validity). Eight rows were re-read against the retrieved excerpts and the reference: the primary judge's verdict matched the reviewer's reading in 8/8; the secondary judge's matched in 5/8, lenient on rows where the candidate abstained or listed topics without the reference's specifics (x402-2, lt-1) and harsh on one partial (docsrag-4).",
+  "rows": [
+    {"id": "x402-2", "reviewer": "agree (primary); secondary lenient", "note": "Answerable question, so the abstention is a system failure: incorrect is right. The secondary judge graded the same abstention correct."},
+    {"id": "x402-3", "reviewer": "agree", "note": "Answer matches the reference; both judges correct."},
+    {"id": "x402-5", "reviewer": "agree", "note": "Flow and no-chain requirement covered; the omitted .demo/venv detail justifies partial."},
+    {"id": "docsrag-4", "reviewer": "agree (primary); secondary harsh", "note": "Retry + non-zero exit correct; the closing clause misstates the index catch-up, so partial is right — the secondary judge's incorrect over-reads it as fabrication."},
+    {"id": "docsrag-7", "reviewer": "agree", "note": "Complete zh answer with correct extra deployment detail (single-writer lock)."},
+    {"id": "gg-1", "reviewer": "agree", "note": "The second half of the question (deliberate non-goals) is missing; partial."},
+    {"id": "lt-1", "reviewer": "agree (primary); secondary lenient", "note": "Topics listed, per-example mechanics missing; partial. The answer also switched to Chinese for an English question."},
+    {"id": "cmp-1", "reviewer": "agree", "note": "Only 2 of the 4 projects covered; partial."}
+  ]
+}

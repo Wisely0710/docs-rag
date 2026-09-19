@@ -1,0 +1,2109 @@
+{
+  "models": {
+    "answer": {
+      "backend": "deepseek",
+      "model": "deepseek-flash"
+    },
+    "judge_primary": {
+      "backend": "deepseek",
+      "model": "deepseek-v4-pro"
+    },
+    "judge_secondary": {
+      "backend": "lmstudio",
+      "model": "qwen3-14b-mlx@8bit"
+    }
+  },
+  "results": [
+    {
+      "id": "x402-1",
+      "family": "en",
+      "question": "Why does the x402 stack not custody keys or send transactions?",
+      "unanswerable": false,
+      "reference": "It is verification-only: it does not custody keys, does not call a facilitator and does not send transactions. Settlement stays with the resource owner — the payer wallet calls the resource contract, or a facilitator settles the same signed authorization where the token supports EIP-3009.",
+      "expected_docs": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 3,
+      "retrieved": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "answer": "The stack is deliberately **verification-only**: it does not custody keys, does not call a facilitator and does not send transactions, because settlement stays with the resource owner — the payer wallet calls the resource contract, or a facilitator settles the same signed authorization where the token supports EIP-3009 (`docs/x402-agent-payments/README.md`).\n\nConsistently, only policy (which `accepts[]` entry to take, budget rule, key management) is application code, while wire format and typed data come from the official `x402` package (`docs/x402-agent-payments/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer_latency_ms": 1418.0,
+      "answer_prompt_tokens": 763,
+      "answer_completion_tokens": 165,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate restates the reference's key facts: verification-only, no key custody, no facilitator call, no transaction sending, and settlement remains with the resource owner via EIP-3009 where supported.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 3109.0,
+        "prompt_tokens": 1043,
+        "completion_tokens": 173
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately reflects the 'verification-only' nature of x402, explains key custody/transaction avoidance, and correctly cites settlement staying with resource owner as per reference answer and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14505.6,
+        "prompt_tokens": 1023,
+        "completion_tokens": 276
+      }
+    },
+    {
+      "id": "x402-2",
+      "family": "en",
+      "question": "Which three HTTP headers make up the x402 v2 wire flow, and in which direction does each travel?",
+      "unanswerable": false,
+      "reference": "PAYMENT-REQUIRED travels seller to buyer (the 402 challenge, a PaymentRequired carrying accepts[]); PAYMENT-SIGNATURE travels buyer to seller (a PaymentPayload with the authorization and signature); PAYMENT-RESPONSE travels seller to buyer as the settlement result (unused in this repo).",
+      "expected_docs": [
+        "docs/x402-agent-payments/mcp/DESIGN.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 2,
+      "retrieved": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "answer": "NOT_IN_CORPUS\n\nThe excerpts name only two headers — `PAYMENT-REQUIRED` and `PAYMENT-SIGNATURE` (`docs/x402-agent-payments/README.md`) — and do not state a third header or the travel direction of any.",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer_latency_ms": 1569.9,
+      "answer_prompt_tokens": 709,
+      "answer_completion_tokens": 171,
+      "judge1": {
+        "verdict": "incorrect",
+        "rationale": "The candidate does not answer the question; it only states NOT_IN_CORPUS. It omits all three headers and their directions from the reference answer.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 5178.8,
+        "prompt_tokens": 930,
+        "completion_tokens": 303
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Excerpts mention only PAYMENT-REQUIRED and PAYMENT-SIGNATURE; no third header or directions are documented.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 16954.4,
+        "prompt_tokens": 880,
+        "completion_tokens": 335
+      }
+    },
+    {
+      "id": "x402-3",
+      "family": "en",
+      "question": "When does the verifier raise authorization_mismatch, and what should the server do about it?",
+      "unanswerable": false,
+      "reference": "It is raised when the signed authorization's to or value differ from the server requirement; the typical next step is to reject, because the client signed terms it was not asked for.",
+      "expected_docs": [
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "answer": "The verifier raises `authorization_mismatch` when the signed authorization's `to` / `value` differ from the server requirement (`docs/x402-agent-payments/verifier/README.md`). The typical next step is to reject, since the client signed terms it was not asked for (`docs/x402-agent-payments/verifier/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "answer_latency_ms": 1197.0,
+      "answer_prompt_tokens": 666,
+      "answer_completion_tokens": 142,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate accurately states when authorization_mismatch is raised and that the server should reject, matching the reference and retrieved documentation.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 1899.5,
+        "prompt_tokens": 879,
+        "completion_tokens": 81
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately reflects the condition and action for authorization_mismatch as per the reference answer and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 15020.2,
+        "prompt_tokens": 816,
+        "completion_tokens": 296
+      }
+    },
+    {
+      "id": "x402-4",
+      "family": "en",
+      "question": "How does the MCP payment bridge enforce the agent's spending cap?",
+      "unanswerable": false,
+      "reference": "The agent declares max_amount_wei per tool call; when the 402 quote is above it, the bridge refuses before sending a second request — no retry, no signed payload.",
+      "expected_docs": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer": "The bridge enforces the cap via the `max_amount_wei` parameter passed in the tool call `fetch_paid_resource(url, max_amount_wei)`. After receiving the `402` with `PAYMENT-REQUIRED`, it checks the quote: if the amount is above `max_amount_wei`, it refuses and does not retry (`docs/x402-agent-payments/mcp/README.md`). Only if the quote passes does it sign the EIP-3009/EIP-712 promise and retry with `PAYMENT-SIGNATURE` (`docs/x402-agent-payments/mcp/README.md`, `docs/x402-agent-payments/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer_latency_ms": 1837.9,
+      "answer_prompt_tokens": 756,
+      "answer_completion_tokens": 205,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate accurately states max_amount_wei is checked after the 402 quote, refusal occurs without retry when exceeded, and signing/retry happens only if approved.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 4876.2,
+        "prompt_tokens": 1035,
+        "completion_tokens": 282
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately describes the max_amount_wei check and refusal mechanism. Excerpts confirm the bridge checks quotes against this cap and refuses without retry, aligning with reference answer.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 16326.1,
+        "prompt_tokens": 985,
+        "completion_tokens": 320
+      }
+    },
+    {
+      "id": "x402-5",
+      "family": "en",
+      "question": "What does scripts/demo.sh prove, and what does it need to run?",
+      "unanswerable": false,
+      "reference": "It proves the whole flow on localhost with no chain, no facilitator and no real key: a seller built on the real verifier answers 402, the agent side signs the authorization and the retry returns 200. The first run creates .demo/venv with just the x402 SDK and eth-account.",
+      "expected_docs": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/x402-agent-payments/README.md",
+        "docs/docs-rag/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer": "`scripts/demo.sh` proves the whole payment flow end to end: a seller built on the real verifier is paid from the agent side, producing **402 → signed authorization → 200** (`docs/x402-agent-payments/README.md`).\n\nIt needs to run: localhost only — no chain, no facilitator and no real key (`docs/x402-agent-payments/README.md`). CI also runs the demo end to end (`docs/x402-agent-payments/README.md`). The excerpts do not list any other runtime prerequisites.",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer_latency_ms": 1874.9,
+      "answer_prompt_tokens": 732,
+      "answer_completion_tokens": 298,
+      "judge1": {
+        "verdict": "partial",
+        "rationale": "Candidate conveys the 402→signed authorization→200 flow and localhost/no-chain/no-facilitator/no-real-key requirements, but omits that the first run creates .demo/venv with the x402 SDK and eth-account.",
+        "unsupported_claims": [
+          "The excerpts do not list any other runtime prerequisites"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14362.4,
+        "prompt_tokens": 1010,
+        "completion_tokens": 1245
+      },
+      "judge2": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly identifies the 402→signed→200 flow and localhost requirement. However, it omits the critical detail about creating .demo/venv with x402 SDK and eth-account from the reference answer, making the explanation incomplete.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 24843.6,
+        "prompt_tokens": 943,
+        "completion_tokens": 514
+      }
+    },
+    {
+      "id": "x402-6",
+      "family": "en",
+      "question": "How many tests does each component of x402-agent-payments have, and what does the mcp suite cover end to end?",
+      "unanswerable": false,
+      "reference": "56 tests in total: verifier 33, client 15, mcp 8. The mcp suite includes the full loop through a real MCP client over stdio — tool discovery, a paid call and a budget refusal.",
+      "expected_docs": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer": "56 tests total: verifier 33, client 15, mcp 8 `docs/x402-agent-payments/README.md` (chunk 19). The mcp component has 8 tests `docs/x402-agent-payments/README.md` (chunk 3). Its suite covers the full loop through a real MCP client over stdio — tool discovery, paid call, and budget refusal — plus wire-level flow tests and end-to-end tests against a mock seller `docs/x402-agent-payments/README.md` (chunk 19), `docs/x402-agent-payments/mcp/README.md` (chunk 4).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "answer_latency_ms": 1511.9,
+      "answer_prompt_tokens": 739,
+      "answer_completion_tokens": 255,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "Candidate gives per-component test counts matching the reference and covers the mcp end-to-end loop. Its additional mention of wire-level and mock-seller end-to-end tests is supported by the retrieved mcp README excerpt.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 6740.0,
+        "prompt_tokens": 1023,
+        "completion_tokens": 510
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate matches reference answer's test counts (56 total: 33,15,8) and mcp coverage. Additional details about wire-level tests and mock seller are supported by excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 19993.1,
+        "prompt_tokens": 985,
+        "completion_tokens": 403
+      }
+    },
+    {
+      "id": "x402-7",
+      "family": "en",
+      "question": "What happens to x402 v1 payloads in this stack, and why?",
+      "unanswerable": false,
+      "reference": "They are rejected explicitly rather than half-accepted — part of the fail-closed policy: unknown versions raise instead of degrading, so a v1 client gets a clear error instead of a partial success.",
+      "expected_docs": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer": "x402 **v1** payloads are rejected explicitly rather than half-accepted, because the stack's wire coverage is x402 v2 HTTP (`PAYMENT-REQUIRED`, `PAYMENT-SIGNATURE`), the `exact` scheme and CAIP-2 `eip155:*` networks only (`docs/x402-agent-payments/README.md`).\n\nConcretely, the verifier raises `invalid_version` when the payload is not x402 v2 (`x402Version != 2`); the typical next step is to re-challenge with `PAYMENT-REQUIRED` (`docs/x402-agent-payments/verifier/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "answer_latency_ms": 1746.4,
+      "answer_prompt_tokens": 715,
+      "answer_completion_tokens": 204,
+      "judge1": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly states v1 payloads are rejected explicitly and the verifier raises invalid_version for non-v2 payloads, but omits the fail-closed rationale that unknown versions raise to give a clear error rather than partial success.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 9718.8,
+        "prompt_tokens": 998,
+        "completion_tokens": 703
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly states v1 payloads are rejected explicitly, citing wire coverage from docs. Matches reference answer's key fact without contradiction.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 20360.5,
+        "prompt_tokens": 954,
+        "completion_tokens": 413
+      }
+    },
+    {
+      "id": "x402-8",
+      "family": "en",
+      "question": "How does the browser client decide which token name and version to use for the EIP-712 domain?",
+      "unanswerable": false,
+      "reference": "It prefers the requirement's extra fields, then a tokenMetadata option, and falls back to USDC defaults — the choice only affects the typed-data domain used for eth_signTypedData_v4.",
+      "expected_docs": [
+        "docs/x402-agent-payments/client/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "answer": "The browser client resolves the EIP-712 domain `name`/`version` in this preference order: first `requirement.extra`, then the `tokenMetadata` option, and finally USDC defaults. This typed data is built for `TransferWithAuthorization` before calling `eth_signTypedData_v4` (`docs/x402-agent-payments/client/README.md` chunk 4).\n\nFor reference, the verifier side exposes explicit `token_name` and `token_version` settings for its EIP-712 domain (`docs/x402-agent-payments/verifier/README.md` chunk 2).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "answer_latency_ms": 1528.9,
+      "answer_prompt_tokens": 780,
+      "answer_completion_tokens": 170,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate accurately states the preference order: requirement.extra, tokenMetadata, then USDC defaults, and correctly associates it with TransferWithAuthorization before eth_signTypedData_v4. The verifier detail is supported by the excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 5008.7,
+        "prompt_tokens": 1046,
+        "completion_tokens": 350
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately reflects the priority order (requirement.extra > tokenMetadata > USDC defaults) and ties it to `eth_signTypedData_v4`, matching the reference answer and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 17227.9,
+        "prompt_tokens": 1010,
+        "completion_tokens": 335
+      }
+    },
+    {
+      "id": "x402-9",
+      "family": "en",
+      "question": "Does the signature the MCP bridge creates move money?",
+      "unanswerable": false,
+      "reference": "No. It is a wallet-signed promise to pay a given amount to a given address before a deadline; settlement is a separate, later step. That is why every test in the repository runs without a chain.",
+      "expected_docs": [
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer": "No. The signature moves no money — it is a wallet-signed promise to pay a given amount to a given address before a deadline, and settlement is a separate, later step owned by the resource server (`docs/x402-agent-payments/mcp/README.md`, `docs/x402-agent-payments/mcp/DESIGN.md`). This is why every test runs without a chain (`docs/x402-agent-payments/mcp/DESIGN.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md"
+      ],
+      "answer_latency_ms": 988.3,
+      "answer_prompt_tokens": 681,
+      "answer_completion_tokens": 129,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate accurately states the signature moves no money, is a promise to pay before a deadline, settlement is separate, and tests run without a chain. All claims are supported by the excerpts and reference.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 3652.7,
+        "prompt_tokens": 917,
+        "completion_tokens": 157
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately states signature doesn't move money, describes it as a promise with settlement as separate step, and cites docs correctly. All claims align with reference answer and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 13788.1,
+        "prompt_tokens": 855,
+        "completion_tokens": 263
+      }
+    },
+    {
+      "id": "x402-10",
+      "family": "en",
+      "question": "Which x402 scheme and which networks does this stack implement?",
+      "unanswerable": false,
+      "reference": "Only the exact scheme, on CAIP-2 eip155:* EVM networks; other schemes and networks are out of scope.",
+      "expected_docs": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 3,
+      "retrieved": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "answer": "The stack implements the x402 v2 HTTP flow (`PAYMENT-REQUIRED`, `PAYMENT-SIGNATURE`) using the `exact` scheme and CAIP-2 `eip155:*` networks; x402 v1 payloads are explicitly rejected (`docs/x402-agent-payments/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer_latency_ms": 1506.7,
+      "answer_prompt_tokens": 683,
+      "answer_completion_tokens": 159,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "Candidate matches reference on the exact scheme and CAIP-2 eip155:* networks; added detail about v2 headers and v1 rejection is supported by excerpt chunk 14.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 4699.3,
+        "prompt_tokens": 879,
+        "completion_tokens": 401
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly identifies 'exact' scheme and CAIP-2 eip155:* networks, matching reference answer. Additional context about v1 rejection is supported by excerpts and does not contradict the key facts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 17898.9,
+        "prompt_tokens": 833,
+        "completion_tokens": 366
+      }
+    },
+    {
+      "id": "x402-11",
+      "family": "zh",
+      "question": "verifier 為什麼對每個請求都重新做真正的密碼學驗證，而不是快取簽章？",
+      "unanswerable": false,
+      "reference": "因為它是無狀態驗證：沒有簽章或 nonce 快取，所以一份帶不同 from 的重放 payload 不可能命中快取中的成功結果；每次都以真正的密碼學重新驗證。",
+      "expected_docs": [
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer": "NOT_IN_CORPUS\n摘錄僅說明 verifier 會做 EIP-712 重建與 EOA 還原驗證，未提及不快取簽章的理由或任何快取設計。",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [],
+      "citations_valid": [],
+      "citations_retrieved": [],
+      "answer_latency_ms": 1179.3,
+      "answer_prompt_tokens": 940,
+      "answer_completion_tokens": 87,
+      "judge1": {
+        "verdict": "incorrect",
+        "rationale": "候選答案未提供原因，僅表示摘錄未提及；參考答案中無狀態驗證、無簽章/nonce 快取、每次真正密碼學重新驗證等關鍵事實完全缺失。",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 8326.0,
+        "prompt_tokens": 1130,
+        "completion_tokens": 609
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly notes excerpts only mention cryptographic verification (EIP-712/EOA) but omit caching rationale. Reference answer's statelessness/replay logic isn't in excerpts, so candidate's 'NOT_IN_CORPUS' is accurate.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 17359.9,
+        "prompt_tokens": 1094,
+        "completion_tokens": 337
+      }
+    },
+    {
+      "id": "x402-12",
+      "family": "en",
+      "question": "What boundary does the verifier keep between the x402 SDK and application code?",
+      "unanswerable": false,
+      "reference": "Application code never touches SDK types: the verifier hands back a plain VerifiedPayment DTO carrying the verified facts (payer, recipient, asset, atomic amount, network, nonce, validity window, authorization identifier).",
+      "expected_docs": [
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 2,
+      "retrieved": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/client/README.md"
+      ],
+      "answer": "The verifier builds the 402 challenge (`PAYMENT-REQUIRED`) and verifies the client's `PAYMENT-SIGNATURE` using the official x402 SDK (EIP-712 / EIP-3009) (`docs/x402-agent-payments/verifier/README.md`, `docs/x402-agent-payments/README.md`). The boundary: header names, codecs, EIP-712 typed data and payload models come from the `x402` package; only policy — which `accepts[]` entry to take, the budget rule, and key management — is application code. Hand-rolling the wire format only adds drift (`docs/x402-agent-payments/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer_latency_ms": 2140.1,
+      "answer_prompt_tokens": 742,
+      "answer_completion_tokens": 329,
+      "judge1": {
+        "verdict": "partial",
+        "rationale": "The candidate describes the SDK-vs-policy boundary but omits the reference's key fact that application code never touches SDK types and the verifier returns a plain VerifiedPayment DTO with verified facts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 8353.6,
+        "prompt_tokens": 1034,
+        "completion_tokens": 541
+      },
+      "judge2": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly identifies SDK/application boundary but omits the key detail about the verifier returning a plain VerifiedPayment DTO with specific fields (payer, recipient, etc.) mentioned in the reference answer.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 18597.6,
+        "prompt_tokens": 1001,
+        "completion_tokens": 368
+      }
+    },
+    {
+      "id": "docsrag-1",
+      "family": "en",
+      "question": "How does docs-rag decide which documents belong to a corpus?",
+      "unanswerable": false,
+      "reference": "A corpus is data, declared in corpora.json: top files, files at the docs root, recursive trees, and directory names to exclude. Nothing tenant-specific lives in code, so retargeting a corpus never requires editing the service.",
+      "expected_docs": [
+        "docs/docs-rag/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer": "docs-rag decides membership through a **declared corpus scope** stored as data in `corpora.json` — nothing tenant-specific lives in code (`docs/docs-rag/README.md`). Per that file's config keys: `corpus_dir` (where the markdown lives), `top_files` (markdown at the corpus root, e.g. `AGENTS.md`), `doc_root_files` (markdown at the root of the docs tree, i.e. `<corpus_dir>/docs/<name>`), `roots` (directories scanned recursively for `*.md`), plus directory names to exclude (`docs/docs-rag/README.md`). Indexing is incremental via sha256 per file, so deleted or archived documents are purged from the index and no longer retrieved (`docs/docs-rag/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/docs-rag/README.md",
+        "AGENTS.md"
+      ],
+      "citations_valid": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/docs-rag/README.md"
+      ],
+      "answer_latency_ms": 1823.4,
+      "answer_prompt_tokens": 761,
+      "answer_completion_tokens": 219,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately states corpus membership is declared in corpora.json and lists the supported config keys, matching the reference and excerpts without contradiction.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 4386.0,
+        "prompt_tokens": 1081,
+        "completion_tokens": 223
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately reflects corpus declaration via corpora.json, config keys (corpus_dir, top_files, etc.), and incremental indexing. Aligns with reference answer and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 15905.1,
+        "prompt_tokens": 970,
+        "completion_tokens": 310
+      }
+    },
+    {
+      "id": "docsrag-2",
+      "family": "en",
+      "question": "How does docs-rag combine its two rankers, and why that method?",
+      "unanswerable": false,
+      "reference": "It fuses vector KNN with FTS5 trigram full-text search using reciprocal rank fusion (k=60). RRF needs no score calibration between the two rankers, which is why it is preferred over weighted score blending.",
+      "expected_docs": [
+        "docs/docs-rag/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/eval/README.md"
+      ],
+      "answer": "NOT_IN_CORPUS\nThe excerpts mention \"score calibration between the two rankers\" (`docs/docs-rag/README.md`) but do not describe the fusion method or its rationale.",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_valid": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/docs-rag/README.md"
+      ],
+      "answer_latency_ms": 1574.9,
+      "answer_prompt_tokens": 688,
+      "answer_completion_tokens": 148,
+      "judge1": {
+        "verdict": "incorrect",
+        "rationale": "Candidate fails to state reciprocal rank fusion of vector KNN and FTS5 trigram search or the score-calibration rationale, instead incorrectly declaring the answer absent from the corpus.",
+        "unsupported_claims": [
+          "NOT_IN_CORPUS"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 16011.0,
+        "prompt_tokens": 875,
+        "completion_tokens": 1150
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly notes fusion method and rationale are absent in excerpts, aligning with reference answer's claims.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 18169.2,
+        "prompt_tokens": 781,
+        "completion_tokens": 370
+      }
+    },
+    {
+      "id": "docsrag-3",
+      "family": "en",
+      "question": "What happens to a document that is deleted or archived from a docs-rag corpus?",
+      "unanswerable": false,
+      "reference": "The index is incremental by sha256, so changed files are re-chunked and re-embedded and deleted files are purged from the index — removing or archiving a document removes it from retrieval too, unlike grepping the working tree.",
+      "expected_docs": [
+        "docs/docs-rag/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer": "Removing or archiving a document removes it from retrieval: the corpus indexes a *declared scope* and re-indexes incrementally, so a removed or archived document is also removed from the index used for retrieval (`docs/docs-rag/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_valid": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/docs-rag/README.md"
+      ],
+      "answer_latency_ms": 967.1,
+      "answer_prompt_tokens": 765,
+      "answer_completion_tokens": 116,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate accurately states that removing or archiving a document removes it from retrieval, matching the reference's key fact. It omits sha256/re-chunking detail but does not contradict or fabricate.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 9010.1,
+        "prompt_tokens": 967,
+        "completion_tokens": 672
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly states removal/archiving removes documents from retrieval and mentions incremental re-indexing, aligning with the reference answer.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 32441.6,
+        "prompt_tokens": 858,
+        "completion_tokens": 697
+      }
+    },
+    {
+      "id": "docsrag-4",
+      "family": "en",
+      "question": "What does the sync client do if another indexer holds the lock?",
+      "unanswerable": false,
+      "reference": "sync_corpus.sh retries for up to a minute and then exits non-zero instead of reporting success: the corpus is synced, and the index catches up on the next run.",
+      "expected_docs": [
+        "docs/docs-rag/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer": "`sync_corpus.sh` retries for up to a minute, then exits non-zero rather than reporting success — the corpus is synced but the index is not (`docs/docs-rag/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_valid": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/docs-rag/README.md"
+      ],
+      "answer_latency_ms": 1154.4,
+      "answer_prompt_tokens": 673,
+      "answer_completion_tokens": 90,
+      "judge1": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly states the retry, non-zero exit, and corpus synced, but omits that the index catches up on the next run, saying only that the index is not synced.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 16802.4,
+        "prompt_tokens": 855,
+        "completion_tokens": 1333
+      },
+      "judge2": {
+        "verdict": "incorrect",
+        "rationale": "Candidate incorrectly claims index isn't synced, contradicting reference and excerpts which state index catches up on next run.",
+        "unsupported_claims": [
+          "the index is not synced"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14724.4,
+        "prompt_tokens": 752,
+        "completion_tokens": 295
+      }
+    },
+    {
+      "id": "docsrag-5",
+      "family": "en",
+      "question": "What is the retrieval evaluation's documented weak spot, with numbers?",
+      "unanswerable": false,
+      "reference": "Cross-lingual retrieval — a Chinese question against an English corpus — recall@5 was 0.3333 across the 6 Chinese probes, versus 1.0 across the 41 English queries; the run overall reported recall@5 0.9149 and MRR 0.8252.",
+      "expected_docs": [
+        "docs/docs-rag/eval/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 3,
+      "retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/eval/README.md"
+      ],
+      "answer": "The documented weak spot is **cross-lingual retrieval** (Chinese question against an English corpus): it hits the right document only **2/6** times (one at rank 1, one at rank 4), while English retrieval is solid — all **41** English queries land the right document in the top 5 (**recall@5 = 1.0**), with ~85% already first (`docs/docs-rag/eval/README.md`). The FTS ranker contributes nothing across languages, so results ride on the vector model alone (`docs/docs-rag/eval/README.md`). Related caveats: file-level labels and no reranker/query rewriting, so recall@1 is bounded (`docs/docs-rag/eval/README.md`); details in `eval/report-book.md` (`docs/docs-rag/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/docs-rag/eval/README.md",
+        "eval/report-book.md",
+        "docs/docs-rag/README.md"
+      ],
+      "citations_valid": [
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer_latency_ms": 1833.0,
+      "answer_prompt_tokens": 730,
+      "answer_completion_tokens": 229,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate identifies the documented weak spot as cross-lingual retrieval and gives the correct numbers: 2/6 Chinese successes versus 41/41 English recall@5. It omits overall run metrics, but those are not essential to the weak-spot question.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 10709.1,
+        "prompt_tokens": 1071,
+        "completion_tokens": 781
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly identifies cross-lingual retrieval as the weak spot with 2/6 hits (0.3333 recall@5) vs English's 1.0, citing document sources. All key numbers and context from reference are present without contradiction.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 21191.4,
+        "prompt_tokens": 986,
+        "completion_tokens": 432
+      }
+    },
+    {
+      "id": "docsrag-6",
+      "family": "en",
+      "question": "Why does the retrieval harness run offline in CI, and what does its gate check?",
+      "unanswerable": false,
+      "reference": "CI runs the harness on a fixture corpus with stub embeddings and a --min-recall gate: a regression in metric computation or label loading fails the build without needing a model server.",
+      "expected_docs": [
+        "docs/docs-rag/eval/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 3,
+      "retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer": "Because CI has no model server: it runs the harness offline on a fixture corpus with stub embeddings so that a metric computation or label-loading regression fails the build without needing a model server (`docs/docs-rag/README.md`).\n\nThe gate is `--min-recall`, which turns the run into a gate with a non-zero exit below the threshold; CI uses it with the `eval/fixture/` corpus, `--backend stub` and no model server (`docs/docs-rag/eval/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/eval/README.md"
+      ],
+      "citations_valid": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/eval/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/eval/README.md"
+      ],
+      "answer_latency_ms": 1204.6,
+      "answer_prompt_tokens": 736,
+      "answer_completion_tokens": 208,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate captures the reference's key facts: offline fixture corpus, stub embeddings, and --min-recall gate causing build failure without a model server; no contradictions or unsupported claims.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 5427.9,
+        "prompt_tokens": 979,
+        "completion_tokens": 362
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately explains offline CI execution with stub embeddings and --min-recall gate, aligning with reference answer and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 16235.3,
+        "prompt_tokens": 881,
+        "completion_tokens": 324
+      }
+    },
+    {
+      "id": "docsrag-7",
+      "family": "zh",
+      "question": "docs-rag 的 MCP 端點有認證機制嗎？部署時要注意什麼？",
+      "unanswerable": false,
+      "reference": "沒有認證：只能在可信網路或 overlay 上暴露。另外它是單主機、單寫者——indexer 會取鎖，同一 corpus 的並行索引會被跳過而不是排隊。",
+      "expected_docs": [
+        "docs/docs-rag/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer": "沒有認證機制。`docs/docs-rag/README.md` 明確指出「The MCP endpoint has **no authentication**」，因此只能部署在受信任網路或 overlay 上（`docs/docs-rag/README.md`）。\n\n部署時要注意：\n- 用 `RAG_DIR` 設定 `corpora.json`、`.env`、語料與索引位置；以 `RAG_CORPUS` 選語料，並可用 `RAG_CORPUS_DIR`、`RAG_HOST`、`RAG_PORT`、`RAG_MCP_TRANSPORT` 等覆寫（`docs/docs-rag/README.md`）。\n- 每個語料一個 launchd 實例：`deploy/com.example.docs-rag.plist` 是模板，需替換佔位符，且各 agent 的 `RAG_CORPUS` 與 `RAG_PORT` 不同（`docs/docs-rag/README.md`）。\n- 單主機、單寫入者：indexer 會取鎖，同一語料並行索引會被跳過而非排隊（`docs/docs-rag/README.md`）。",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_valid": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/docs-rag/README.md"
+      ],
+      "answer_latency_ms": 2260.2,
+      "answer_prompt_tokens": 730,
+      "answer_completion_tokens": 389,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "Candidate includes the key facts: no authentication, expose only on trusted network/overlay, and single-host/single-writer lock behavior. Additional deployment details are supported by retrieved excerpts and do not contradict.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 3719.2,
+        "prompt_tokens": 1127,
+        "completion_tokens": 199
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately states no authentication, trusted network requirement, and single-host/single-writer behavior. Deployment notes align with excerpts/reference.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 19375.6,
+        "prompt_tokens": 1039,
+        "completion_tokens": 386
+      }
+    },
+    {
+      "id": "docsrag-8",
+      "family": "en",
+      "question": "How does docs-rag meter queries, and can that metering fail a retrieval?",
+      "unanswerable": false,
+      "reference": "Every tool call appends one line to logs/queries-<corpus>.log; the write is best-effort and never blocks or fails retrieval.",
+      "expected_docs": [
+        "docs/docs-rag/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer": "Metering: each MCP tool call (`retrieve`, `corpus_status`) appends one line to `logs/queries-<corpus>.log` — the corpus is versioned by name (`docs/docs-rag/README.md`). The excerpts do not state whether metering failures affect retrieval.",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_valid": [
+        "docs/docs-rag/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/docs-rag/README.md"
+      ],
+      "answer_latency_ms": 1929.6,
+      "answer_prompt_tokens": 708,
+      "answer_completion_tokens": 309,
+      "judge1": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly describes log line metering, but misses that the write is best-effort and never blocks or fails retrieval, so the second part is incomplete. The versioned-by-name claim is unsupported.",
+        "unsupported_claims": [
+          "the corpus is versioned by name (`docs/docs-rag/README.md`)"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 20279.8,
+        "prompt_tokens": 904,
+        "completion_tokens": 1456
+      },
+      "judge2": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly identifies metering via log appends but omits the key fact from reference that writes are best-effort and never block retrieval. Unsupported claim about versioning by name is fabricated.",
+        "unsupported_claims": [
+          "the corpus is versioned by name (`docs/docs-rag/README.md`)"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 39165.1,
+        "prompt_tokens": 804,
+        "completion_tokens": 854
+      }
+    },
+    {
+      "id": "gg-1",
+      "family": "en",
+      "question": "What exactly does grounding-guard check, and what does it deliberately not do?",
+      "unanswerable": false,
+      "reference": "It flags numbers and identifiers in LLM-generated text that are not present in the supplied facts — pure functions, no LLM, no I/O. It deliberately does not do schema/type validation, semantic entailment checks (those need a probabilistic judge), or prompt-injection defence, and it ignores identifiers longer than 6 characters by default.",
+      "expected_docs": [
+        "docs/grounding-guard/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md"
+      ],
+      "answer": "`grounding-guard` is a deterministic post-generation check: it compares the **numbers** and **identifiers** in LLM-generated text against the `facts` you supply and reports every one that is **not** present there. If a number or symbol isn't in the facts, no prompt engineering makes it true `docs/grounding-guard/README.md`.\n\nWhat it deliberately does *not* do:\n- **No LLM, no I/O, no dependencies** — pure Python functions, fully unit-testable `docs/grounding-guard/README.md`.\n- It **does not decide the outcome**: it returns the offending tokens and the caller chooses to reject, fix, or hide the section `docs/grounding-guard/README.md`.\n- It **tolerates rounded number formats on purpose** to lower false positives `docs/grounding-guard/README.md`.\n- It stays **domain-free**; label presets are opt-in `docs/grounding-guard/README.md`.",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_valid": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/grounding-guard/README.md"
+      ],
+      "answer_latency_ms": 2467.3,
+      "answer_prompt_tokens": 864,
+      "answer_completion_tokens": 340,
+      "judge1": {
+        "verdict": "partial",
+        "rationale": "Correctly states it flags ungrounded numbers/identifiers as a pure no-LLM/no-I/O check, but omits key deliberate exclusions: schema/type validation, semantic entailment, prompt-injection defence, and ignoring identifiers over 6 characters.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 13211.5,
+        "prompt_tokens": 1241,
+        "completion_tokens": 918
+      },
+      "judge2": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly identifies grounding-guard's purpose but omits key exclusions (schema checks, semantic entailment, prompt-injection defense) and the 6-character identifier limit mentioned in reference.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 20315.8,
+        "prompt_tokens": 1152,
+        "completion_tokens": 397
+      }
+    },
+    {
+      "id": "gg-2",
+      "family": "en",
+      "question": "Why does grounding-guard ground rounded textual forms of numbers on purpose?",
+      "unanswerable": false,
+      "reference": "Because narratives frequently round — a fact stored as 60.0 grounds the token 60, and 263.30 grounds 263.3. The trade is a little precision for far fewer false positives on rounded prose.",
+      "expected_docs": [
+        "docs/grounding-guard/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md"
+      ],
+      "answer": "To trade a little precision for far fewer false positives on rounded prose: a fact stored as `60.0` grounds the narrative token `60`, and numeric equality holds too (`263.30` ↔ `263.3`) — `docs/grounding-guard/README.md`. The Chinese summary restates that the design \"刻意容忍四捨五入寫法以降低誤報\" (deliberately tolerates rounded formulations to reduce false positives), consistent with its principle of certainty-first checking (`docs/grounding-guard/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_valid": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/grounding-guard/README.md"
+      ],
+      "answer_latency_ms": 1513.3,
+      "answer_prompt_tokens": 791,
+      "answer_completion_tokens": 174,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate accurately states the reason: rounded textual forms are grounded to reduce false positives on rounded prose, with the same examples as the reference. Additional cited details are supported by the excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 4391.0,
+        "prompt_tokens": 1049,
+        "completion_tokens": 213
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately reflects the reference answer's key points about trading precision for fewer false positives, citing relevant docs and aligning with the Chinese summary.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14349.8,
+        "prompt_tokens": 979,
+        "completion_tokens": 275
+      }
+    },
+    {
+      "id": "gg-3",
+      "family": "en",
+      "question": "How do label patterns work in grounding-guard, and why are they opt-in?",
+      "unanswerable": false,
+      "reference": "Labels are names, not values: a label_pattern strips labels such as MA20 or R1 before numbers are extracted, and it must stay an explicit enumeration so unknown labels like RSI87 still expose their digits. The FINANCE_LABELS preset ships as an opt-in example so the core library stays domain-free.",
+      "expected_docs": [
+        "docs/grounding-guard/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md"
+      ],
+      "answer": "Label patterns strip labels like `MA20` or `R1` before numbers are extracted, so labels (names, not values) aren't reported as ungrounded. They must be an explicit enumeration so unknown labels aren't silently dropped; e.g. `ungrounded_numbers(text, facts, label_pattern=presets.FINANCE_LABELS)` (`docs/grounding-guard/README.md`).\n\nThey are opt-in on purpose: \"Presets are opt-in on purpose — the core library stays domain-free\" (`docs/grounding-guard/README.md`). Per the port note, `number_tokens(text)` returns every number token; callers pass `label_pattern=presets.FINANCE_LABELS` to reproduce the original hard-coded behaviour, verified by a differential test (`docs/grounding-guard/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_valid": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/grounding-guard/README.md"
+      ],
+      "answer_latency_ms": 2132.3,
+      "answer_prompt_tokens": 815,
+      "answer_completion_tokens": 304,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate accurately explains label stripping, explicit enumeration to avoid silently dropping unknown labels, and opt-in presets to keep the core library domain-free, all supported by the excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 6037.3,
+        "prompt_tokens": 1157,
+        "completion_tokens": 321
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly explains label patterns strip names (not values) and opt-in for domain-free core. All claims are supported by excerpts/reference.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 31995.0,
+        "prompt_tokens": 1062,
+        "completion_tokens": 675
+      }
+    },
+    {
+      "id": "gg-4",
+      "family": "zh",
+      "question": "grounding-guard 的 identifier 比對為什麼用 ASCII 邊界而不是單詞邊界？",
+      "unanswerable": false,
+      "reference": "因為 CJK 字元在正則的單詞邊界（\\b）眼中算 word 字元，貼著中文的代號如「買入ACME」會被漏掉；改用 ASCII 邊界 (?<![A-Za-z0-9])…(?![A-Za-z0-9]) 之後，緊貼中文仍能匹配。",
+      "expected_docs": [
+        "docs/grounding-guard/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer": "`grounding-guard` 的 identifier 比對刻意採用 ASCII 邊界 `(?<![A-Za-z0-9])…(?![A-Za-z0-9])`，而非 `\\b`，原因是：識別碼若緊貼中文文本（例如 `買入ACME`），用 `\\b` 會漏掉，因為 CJK 字元在 Python 正則中被視為 word character，導致 `\\b` 不成立於中英交界處；改用 ASCII 邊界後，黏在 CJK 文字旁的識別碼仍能被匹配（`docs/grounding-guard/README.md`）。",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_valid": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/grounding-guard/README.md"
+      ],
+      "answer_latency_ms": 1801.4,
+      "answer_prompt_tokens": 963,
+      "answer_completion_tokens": 179,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate correctly states the ASCII-boundary rationale: CJK counts as word character, so \\b misses identifiers glued to Chinese, while ASCII boundaries still match them.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 2819.9,
+        "prompt_tokens": 1285,
+        "completion_tokens": 119
+      },
+      "judge2": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly explains ASCII boundary use but incorrectly attributes regex behavior to Python, while excerpts only mention regex generally.",
+        "unsupported_claims": [
+          "Python 正則"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 28085.8,
+        "prompt_tokens": 1216,
+        "completion_tokens": 574
+      }
+    },
+    {
+      "id": "gg-5",
+      "family": "en",
+      "question": "What rule of thumb does grounding-guard state about deterministic versus probabilistic checks?",
+      "unanswerable": false,
+      "reference": "Deterministic checks first, probabilistic checks second. The guard runs after generation because prompt-level instructions reduce hallucinated values but do not eliminate them — if a number or symbol is not in the facts, no prompting makes it true.",
+      "expected_docs": [
+        "docs/grounding-guard/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/grounding-guard/README.md"
+      ],
+      "answer": "**Deterministic checks first, probabilistic checks second.** `docs/grounding-guard/README.md`\n\nThe rationale given: hallucinated numbers or symbols are probabilistic and cannot be fixed by prompt engineering, whereas a deterministic post-check is not — so the guard runs after generation and reports the offending tokens for the caller to act on. `docs/grounding-guard/README.md`",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_valid": [
+        "docs/grounding-guard/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/grounding-guard/README.md"
+      ],
+      "answer_latency_ms": 1471.2,
+      "answer_prompt_tokens": 894,
+      "answer_completion_tokens": 137,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "Candidate states the rule of thumb exactly and explains the probabilistic hallucination vs deterministic post-check rationale, all supported by the reference and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 4510.3,
+        "prompt_tokens": 1117,
+        "completion_tokens": 285
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly states the rule of thumb and explains hallucinations are probabilistic, aligning with excerpts and reference answer.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 15535.4,
+        "prompt_tokens": 1035,
+        "completion_tokens": 298
+      }
+    },
+    {
+      "id": "lt-1",
+      "family": "en",
+      "question": "What do the five llm-toolbox examples teach?",
+      "unanswerable": false,
+      "reference": "Structured output via response_format plus parsing guards; two-phase tool calling with tool_call_id; streaming accumulation and finish_reason handling; context-budget trimming and summarisation; and a hand-rolled agent loop (~150 lines) that converges after two tool rounds.",
+      "expected_docs": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/docs-rag/eval/README.md"
+      ],
+      "answer": "五個範例對應 `docs/llm-toolbox/README.md` 所述的主題：structured output、tool calling、streaming、context 管理，以及手寫 agent loop。對應檔案為 `examples/01_structured_output.py`、`02_tool_calling.py`、`03_streaming.py`、`04_context_management.py`、`05_handrolled_agent.py`，共用 `_common.py`（client 工廠，可注入 mock transport）（`docs/llm-toolbox/README.md`）。\n\n每個範例都有測試，可離線驗證：不打網路、不需要 API key，測試以 httpx MockTransport 全綠（`docs/llm-toolbox/README.md`）。",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_valid": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer_latency_ms": 1706.8,
+      "answer_prompt_tokens": 869,
+      "answer_completion_tokens": 234,
+      "judge1": {
+        "verdict": "partial",
+        "rationale": "It lists the five topics and offline test setup, but omits the specific lessons from the reference: response_format/parsing guards, tool_call_id, finish_reason handling, context trimming/summarisation, and agent-loop convergence.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 9403.0,
+        "prompt_tokens": 1183,
+        "completion_tokens": 673
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly identifies five examples matching the README's topics and files, aligning with reference answer's core concepts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 30795.0,
+        "prompt_tokens": 1137,
+        "completion_tokens": 641
+      }
+    },
+    {
+      "id": "lt-2",
+      "family": "zh",
+      "question": "llm-toolbox 的測試為什麼用 httpx.MockTransport 而不打真實 API？",
+      "unanswerable": false,
+      "reference": "為了讓測試離線全綠：不打網路、CI 不需要任何 API key，並能斷言「請求長什麼樣、回應怎麼被解析」。要實跑真回應時另有 Live 模式，設定 OPENAI_API_KEY 後照 README 執行。",
+      "expected_docs": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer": "因為測試要「離線全綠」：不打網路、CI 不需要任何 key。測試以 `httpx.MockTransport` 注入 SDK 內部，改為斷言「請求長什麼樣、回應怎麼被解析」，而非驗證真實模型輸出；要看真回應則走 Live 模式（`export OPENAI_API_KEY=...`）實際執行。\n\n- `docs/llm-toolbox/README.md`（chunk 1：「測試離線全綠：不碰真實 API…測試不打網路，CI 也不需要任何 key」；「Live 模式」）\n- `docs/llm-toolbox/README.md`（chunk 8：`_common.py` client 工廠「可注入 mock transport」、`test_examples.py` 離線全綠；紀律「測試離線可跑」）",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_valid": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer_latency_ms": 1755.8,
+      "answer_prompt_tokens": 1152,
+      "answer_completion_tokens": 247,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "Candidate captures all key facts: offline green tests, no network/API key in CI, inject MockTransport to assert request and response parsing, and separate Live mode with OPENAI_API_KEY.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 4699.2,
+        "prompt_tokens": 1491,
+        "completion_tokens": 246
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately explains offline testing, MockTransport's role, and Live mode as per reference and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 17522.6,
+        "prompt_tokens": 1489,
+        "completion_tokens": 307
+      }
+    },
+    {
+      "id": "lt-3",
+      "family": "en",
+      "question": "Which gates run in llm-toolbox CI, and on which Python versions?",
+      "unanswerable": false,
+      "reference": "ruff check, ruff format --check, mypy and pytest (10 offline tests) — on Python 3.11 and 3.12.",
+      "expected_docs": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 2,
+      "retrieved": [
+        "docs/x402-agent-payments/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/docs-rag/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "answer": "NOT_IN_CORPUS\nThe `docs/llm-toolbox/README.md` excerpt shown contains only the title, CI badge link, and design decisions — no list of gates or Python versions.",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_valid": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer_latency_ms": 1960.8,
+      "answer_prompt_tokens": 708,
+      "answer_completion_tokens": 194,
+      "judge1": {
+        "verdict": "incorrect",
+        "rationale": "The candidate does not provide any of the requested gates or Python versions, only states the information is absent from the excerpt, omitting all key facts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 8682.6,
+        "prompt_tokens": 882,
+        "completion_tokens": 560
+      },
+      "judge2": {
+        "verdict": "incorrect",
+        "rationale": "Excerpts mention Python 3.11+ for x402-agent-payments, but no llm-toolbox CI gates or versions are explicitly listed in the provided documentation.",
+        "unsupported_claims": [
+          "ruff check, ruff format --check, mypy and pytest (10 offline tests) — on Python 3.11 and 3.12"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 20870.7,
+        "prompt_tokens": 819,
+        "completion_tokens": 435
+      }
+    },
+    {
+      "id": "lt-4",
+      "family": "en",
+      "question": "What does the hand-rolled agent loop in llm-toolbox demonstrate?",
+      "unanswerable": false,
+      "reference": "An agent loop without any framework: model → tool → observation, repeated until it converges to the final answer — about 150 lines, with the acceptance test being two rounds of tool calls before the final answer.",
+      "expected_docs": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/mcp/README.md"
+      ],
+      "answer": "The hand-rolled agent loop (`05_handrolled_agent`) demonstrates an agent loop **without framework dependencies** — a model→tool→observation cycle of about 150 lines, tested to converge to a final answer after two rounds of tool calls (`docs/llm-toolbox/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_valid": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer_latency_ms": 1354.6,
+      "answer_prompt_tokens": 802,
+      "answer_completion_tokens": 86,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate accurately captures the framework-free agent loop, model-to-tool-to-observation cycle, roughly 150 lines, and acceptance test of two tool-call rounds before convergence.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 4362.9,
+        "prompt_tokens": 1008,
+        "completion_tokens": 205
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate accurately describes the hand-rolled agent loop as framework-independent, with model→tool→observation cycle, ~150 lines, and two tool calls before final answer, matching reference and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 13675.3,
+        "prompt_tokens": 962,
+        "completion_tokens": 261
+      }
+    },
+    {
+      "id": "lt-5",
+      "family": "en",
+      "question": "What is the documented limitation of the context-management example?",
+      "unanswerable": false,
+      "reference": "Its character-count budget is only a teaching proxy; production use should replace it with a real tokenizer such as tiktoken.",
+      "expected_docs": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/llm-toolbox/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md",
+        "docs/x402-agent-payments/verifier/README.md",
+        "docs/x402-agent-payments/verifier/README.md"
+      ],
+      "answer": "NOT_IN_CORPUS\nThe excerpts only describe `04_context_management` (context budget trimming/summarization strategy, tested by pure functions) in `docs/llm-toolbox/README.md`; no limitation of it is documented.",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_valid": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer_latency_ms": 1303.4,
+      "answer_prompt_tokens": 654,
+      "answer_completion_tokens": 143,
+      "judge1": {
+        "verdict": "incorrect",
+        "rationale": "The reference documents a specific limitation: the character-count budget is only a teaching proxy and should be replaced by a real tokenizer. The candidate denies any documented limitation, contradicting the reference.",
+        "unsupported_claims": [
+          "No limitation of the context-management example is documented"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 5638.5,
+        "prompt_tokens": 833,
+        "completion_tokens": 339
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly notes no limitation is documented in the excerpts, aligning with the provided texts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 15356.8,
+        "prompt_tokens": 765,
+        "completion_tokens": 308
+      }
+    },
+    {
+      "id": "cmp-1",
+      "family": "en",
+      "question": "Which projects in this portfolio run offline — demo or tests — and how?",
+      "unanswerable": false,
+      "reference": "All four: x402-agent-payments' demo.sh runs the paid flow in-process and chain-free; docs-rag's demo.sh indexes a synthetic corpus with stub embeddings and writes nothing outside a mktemp directory; llm-toolbox's tests inject httpx.MockTransport so no network or API key is needed; grounding-guard is pure functions with zero I/O.",
+      "expected_docs": [
+        "docs/docs-rag/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/grounding-guard/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 2,
+      "retrieved": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer": "Two projects:\n\n**x402-agent-payments** — offline demos and tests:\n- Client tests (`yarn test`) run the built `dist/` package against a `node:http` mock seller and stubbed `window.ethereum`: \"real `fetch`, real header codec, no network, no chain, no test dependencies\" (`docs/x402-agent-payments/client/README.md`).\n- `scripts/demo.sh` runs on localhost with \"no chain, no facilitator and no real key\" (`docs/x402-agent-payments/README.md`).\n- MCP tests use a mock seller for wire-level and end-to-end flows (`docs/x402-agent-payments/mcp/README.md`).\n\n**docs-rag** — eval harness runs fully offline using stub embeddings for plumbing checks (`docs/docs-rag/eval/README.md`); CI runs it offline on a fixture corpus with a `--min-recall` gate, no model server needed (`docs/docs-rag/README.md`).",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "citations_valid": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/docs-rag/README.md"
+      ],
+      "answer_latency_ms": 1962.3,
+      "answer_prompt_tokens": 807,
+      "answer_completion_tokens": 305,
+      "judge1": {
+        "verdict": "partial",
+        "rationale": "Candidate accurately covers x402-agent-payments and docs-rag offline behavior but omits llm-toolbox and grounding-guard, so the portfolio-wide answer is incomplete.",
+        "unsupported_claims": [
+          "Only two projects run offline (omits llm-toolbox and grounding-guard)"
+        ],
+        "error": null,
+        "configured": true,
+        "latency_ms": 15533.5,
+        "prompt_tokens": 1195,
+        "completion_tokens": 1004
+      },
+      "judge2": {
+        "verdict": "partial",
+        "rationale": "Candidate correctly identifies x402-agent-payments and docs-rag but omits llm-toolbox (httpx.MockTransport) and grounding-guard (pure functions).",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14728.9,
+        "prompt_tokens": 1114,
+        "completion_tokens": 269
+      }
+    },
+    {
+      "id": "cmp-2",
+      "family": "zh",
+      "question": "這個作品集哪些專案明講「官方 SDK 優先」？理由是什麼？",
+      "unanswerable": false,
+      "reference": "x402-agent-payments 與其 mcp 橋：header 名稱、codecs、EIP-712 typed data 與 payload 模型都取自官方 x402 套件，手寫 wire format 只會引入 drift，應用碼只保留 policy（挑哪個 accepts 條目、預算、金鑰管理）；llm-toolbox 也用官方 openai SDK，靠 OPENAI_BASE_URL 換 DeepSeek／Qwen 等相容端點。",
+      "expected_docs": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/llm-toolbox/README.md"
+      ],
+      "retrieval_hit": true,
+      "retrieval_rank": 1,
+      "retrieved": [
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer": "兩個專案明講「官方 SDK 優先」：\n\n- `docs/llm-toolbox/README.md`：理由是用官方 `openai` Python SDK，透過 `OPENAI_BASE_URL` 即可切換 DeepSeek、Qwen 等 OpenAI-compatible 端點，「一個 SDK 學透三個生態」（chunk 1）。\n- `docs/x402-agent-payments/README.md`：header 名稱、codecs、EIP-712 typed data 與 payload models 全取自官方 `x402` 套件，只有 policy（挑哪個 `accepts[]`、預算規則、金鑰管理）是自己寫的；理由是「Hand-rolling the wire format only adds drift」（chunk 15）。",
+      "answer_error": null,
+      "abstained": false,
+      "citations": [
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_valid": [
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "citations_retrieved": [
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer_latency_ms": 1609.1,
+      "answer_prompt_tokens": 1156,
+      "answer_completion_tokens": 244,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "候選答案完整涵蓋兩個專案及其官方 SDK 優先的理由，引用正確且無超出文件或參考答案的虛構事實。",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 5226.7,
+        "prompt_tokens": 1521,
+        "completion_tokens": 220
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly identifies both projects and their reasons, aligning with reference answer and excerpts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14408.1,
+        "prompt_tokens": 1548,
+        "completion_tokens": 235
+      }
+    },
+    {
+      "id": "out-en-1",
+      "family": "en",
+      "question": "How much revenue did the stock engine generate in 2025?",
+      "unanswerable": true,
+      "reference": "",
+      "expected_docs": [],
+      "retrieval_hit": null,
+      "retrieval_rank": 0,
+      "retrieved": [
+        "docs/grounding-guard/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/README.md",
+        "docs/docs-rag/README.md",
+        "docs/docs-rag/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md"
+      ],
+      "answer": "NOT_IN_CORPUS\nThe excerpts contain no information about a stock engine or any revenue figures.",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [],
+      "citations_valid": [],
+      "citations_retrieved": [],
+      "answer_latency_ms": 913.4,
+      "answer_prompt_tokens": 758,
+      "answer_completion_tokens": 56,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "Candidate explicitly declines and states the retrieved excerpts lack any stock engine or revenue information. It asserts no facts beyond the corpus gap, which is appropriate.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 2747.9,
+        "prompt_tokens": 863,
+        "completion_tokens": 118
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "The candidate correctly identified no corpus information on 'stock engine' revenue, avoiding factual claims.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 12588.3,
+        "prompt_tokens": 795,
+        "completion_tokens": 231
+      }
+    },
+    {
+      "id": "out-en-2",
+      "family": "en",
+      "question": "Which cloud provider hosts the production deployment of x402-agent-payments, and what does it cost per month?",
+      "unanswerable": true,
+      "reference": "",
+      "expected_docs": [],
+      "retrieval_hit": null,
+      "retrieval_rank": 0,
+      "retrieved": [
+        "docs/x402-agent-payments/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/client/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer": "NOT_IN_CORPUS\nThe excerpts do not mention any cloud provider hosting production or monthly hosting costs.",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [],
+      "citations_valid": [],
+      "citations_retrieved": [],
+      "answer_latency_ms": 1204.3,
+      "answer_prompt_tokens": 736,
+      "answer_completion_tokens": 63,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate correctly states the corpus does not mention a cloud provider or monthly hosting costs and asserts no unsupported facts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 2508.4,
+        "prompt_tokens": 842,
+        "completion_tokens": 109
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "The documents do not mention cloud providers, hosting details, or costs. The candidate correctly declined to answer.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14724.3,
+        "prompt_tokens": 798,
+        "completion_tokens": 289
+      }
+    },
+    {
+      "id": "out-en-3",
+      "family": "en",
+      "question": "What salary band does the portfolio author expect for a senior AI engineer position?",
+      "unanswerable": true,
+      "reference": "",
+      "expected_docs": [],
+      "retrieval_hit": null,
+      "retrieval_rank": 0,
+      "retrieved": [
+        "docs/docs-rag/eval/README.md",
+        "docs/x402-agent-payments/mcp/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/docs-rag/eval/README.md",
+        "docs/grounding-guard/README.md",
+        "docs/x402-agent-payments/README.md"
+      ],
+      "answer": "NOT_IN_CORPUS\nThe excerpts contain no compensation or salary information for any role.",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [],
+      "citations_valid": [],
+      "citations_retrieved": [],
+      "answer_latency_ms": 1204.9,
+      "answer_prompt_tokens": 692,
+      "answer_completion_tokens": 48,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate explicitly declines, stating the excerpts contain no compensation or salary information, and asserts no facts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 3758.0,
+        "prompt_tokens": 796,
+        "completion_tokens": 147
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "No documents mention salary bands or compensation data for roles.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14413.6,
+        "prompt_tokens": 736,
+        "completion_tokens": 287
+      }
+    },
+    {
+      "id": "out-zh-1",
+      "family": "zh",
+      "question": "SafeRun 的代幣經濟採用哪一種銷毀機制？",
+      "unanswerable": true,
+      "reference": "",
+      "expected_docs": [],
+      "retrieval_hit": null,
+      "retrieval_rank": 0,
+      "retrieved": [
+        "docs/grounding-guard/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/llm-toolbox/README.md",
+        "docs/x402-agent-payments/mcp/DESIGN.md",
+        "docs/llm-toolbox/README.md"
+      ],
+      "answer": "NOT_IN_CORPUS\n提供的摘錄中完全沒有 SafeRun 或其代幣經濟／銷毀機制的相關內容。",
+      "answer_error": null,
+      "abstained": true,
+      "citations": [],
+      "citations_valid": [],
+      "citations_retrieved": [],
+      "answer_latency_ms": 1196.9,
+      "answer_prompt_tokens": 1093,
+      "answer_completion_tokens": 59,
+      "judge1": {
+        "verdict": "correct",
+        "rationale": "The candidate declines to answer and correctly states the excerpts contain no SafeRun or token burn information, asserting no unsupported facts.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 3692.8,
+        "prompt_tokens": 1205,
+        "completion_tokens": 139
+      },
+      "judge2": {
+        "verdict": "correct",
+        "rationale": "Candidate correctly identified no corpus mentions SafeRun or its token economy/destroy mechanism.",
+        "unsupported_claims": [],
+        "error": null,
+        "configured": true,
+        "latency_ms": 14528.9,
+        "prompt_tokens": 1185,
+        "completion_tokens": 263
+      }
+    }
+  ],
+  "corpus_files": 9,
+  "metrics": {
+    "rows": 36,
+    "answerable": 32,
+    "unanswerable": 4,
+    "answer_failures": 0,
+    "retrieval_hit_at_k": 1.0,
+    "answer_accuracy_primary": 0.5938,
+    "answer_accuracy_primary_lenient": 0.8438,
+    "answer_accuracy_secondary": 0.75,
+    "judge_agreement": {
+      "rows": 36,
+      "agreement": 0.7778,
+      "kappa": 0.5152
+    },
+    "abstention_on_unanswerable_marker": 1.0,
+    "abstention_on_unanswerable_primary": 1.0,
+    "over_abstention_answerable": 0.1562,
+    "citations": {
+      "answers_with_citations": 0.8611,
+      "citation_paths_valid": 0.9565,
+      "citation_paths_retrieved": 0.9565,
+      "answers_all_citations_valid": 0.9355
+    },
+    "judge_failures": {
+      "primary": 0,
+      "secondary": 0
+    },
+    "latency_ms": {
+      "answer_p50": 1569.9,
+      "answer_p95": 2140.1
+    },
+    "tokens": {
+      "answer": {
+        "prompt": 28451,
+        "completion": 6835
+      },
+      "judge_primary": {
+        "prompt": 37451,
+        "completion": 17147
+      },
+      "judge_secondary": {
+        "prompt": 35242,
+        "completion": 13639
+      }
+    }
+  },
+  "by_family": {
+    "en": {
+      "rows": 30,
+      "answerable": 27,
+      "retrieval_hit_at_k": 1.0,
+      "accuracy_primary": 0.5556,
+      "abstention_marker": 1.0
+    },
+    "zh": {
+      "rows": 6,
+      "answerable": 5,
+      "retrieval_hit_at_k": 1.0,
+      "accuracy_primary": 0.8,
+      "abstention_marker": 1.0
+    }
+  },
+  "golden": "eval/qa/golden/portfolio.jsonl",
+  "k": 6,
+  "index_log": "",
+  "corpus": {
+    "name": "portfolio",
+    "backend": "lmstudio",
+    "model": "text-embedding-nomic-embed-text-v1.5",
+    "location": "eval/qa/.work",
+    "stats": {
+      "files": 9,
+      "chunks": 128,
+      "last_indexed_ts": "1789821966",
+      "corpus_head": "c3970ea",
+      "synced_at": "2026-09-19T12:45:59Z",
+      "dirty": false
+    },
+    "label_warnings": []
+  }
+}

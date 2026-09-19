@@ -12,5 +12,23 @@ target-version = "py311"
 
 [tool.mypy]
 python_version = "3.11"
-files = ["ragconfig.py", "corpus.py", "indexer.py", "searchlib.py", "ragquery.py", "serve.py", "eval/run_eval.py"]
+# eval/ is a namespace package (no __init__.py): map every file path to its module name
+# from the repo root, so `eval.evalutil` is one module no matter which file imports it.
+explicit_package_bases = true
+mypy_path = "."
+files = [
+    "ragconfig.py",
+    "corpus.py",
+    "indexer.py",
+    "searchlib.py",
+    "ragquery.py",
+    "serve.py",
+    "qa/llm.py",
+    "qa/answer.py",
+    "qa/judge.py",
+    "qa/ask.py",
+    "eval/evalutil.py",
+    "eval/run_eval.py",
+    "eval/qa/run_qa_eval.py",
+]
 ignore_missing_imports = true

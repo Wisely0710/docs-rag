@@ -30,3 +30,10 @@ eval/.work/
 # follow the corpus/ and corpora.json rules above.
 !eval/fixture/corpus/
 !eval/fixture/corpora.json
+
+# QA evaluation work dir (portfolio corpus checkout + index; see eval/qa/README.md)
+eval/qa/.work/
+
+# ... except the QA fixture, on the same terms as the retrieval fixture above.
+!eval/qa/fixture/corpus/
+!eval/qa/fixture/corpora.json

@@ -95,15 +95,17 @@ the placeholders and bootstrap it per corpus (`RAG_CORPUS` and `RAG_PORT` differ
 ## Clients
 
 Two shell clients ship with the service so a consuming repository does not have to
-re-implement the protocol:
+re-implement the protocol, plus the QA entry point:
 
 | Script | Purpose |
 |--------|---------|
 | `client/sync_corpus.sh` | push a local documentation tree into a corpus mirror and re-index it |
 | `client/query.sh` | run a retrieval from the shell (read-only; same path as the MCP tool) |
+| `qa/ask.py` | ask a question and print a cited answer built on the retrieval path (needs a chat endpoint; measured by [`eval/qa/`](eval/qa/README.md)) |
 
-Both read the corpus scope from the **service's** config at run time, so they keep no second
-copy of it — a scope change on the service side cannot silently drift from what is pushed.
+The two client scripts read the corpus scope from the **service's** config at run time, so
+they keep no second copy of it — a scope change on the service side cannot silently drift
+from what is pushed.
 `sync_corpus.sh` also guards its target: it refuses any `--remote-dir` that is not exactly
 `<service-dir>/corpus/<corpus>`, because the transfer uses `--delete` and a typo must not be
 able to overwrite another corpus. `--dry-run` prints the payload and changes nothing (it
@@ -146,9 +148,33 @@ CI runs the harness offline on a fixture corpus (stub embeddings) with a `--min-
 gate, so a metric computation or label-loading regression fails the build without a
 model server.
 
+### Answer quality (2026-09-19)
+
+The QA layer answers from the retrieved excerpts with citations and is scored by two
+judges — `deepseek-v4-pro` and, cross-family, `qwen3-14b-mlx@8bit` — against a 36-question
+labelled set over the portfolio's own public documentation. Method and error analysis:
+[`eval/qa/README.md`](eval/qa/README.md); full report: [`eval/qa/report-portfolio.md`](eval/qa/report-portfolio.md).
+
+| metric | value |
+|---|---|
+| answer accuracy — strict / correct+partial | 0.5938 / 0.8438 |
+| off-corpus questions answered by abstention | 4/4 |
+| retrieval hit@6 (answerable) | 1.0 |
+| judge agreement (kappa) | 0.7778 (0.5152) |
+| cited paths that exist in the corpus | 0.9565 |
+
+The gap between the two accuracies is the story: the right *documents* were always
+retrieved, but for 5 of 32 questions the answer-bearing *passage* was not among the
+top-6 excerpts, so the model declined instead of guessing; a k=10 diagnostic does not
+recover them (chunk boundaries, and en→zh / zh→en cross-lingual cases). CI runs the same
+harness offline with stub chat backends and `--min-accuracy` / `--min-citation-validity`
+gates.
+
 ## What it does not do
 
 - No reranking, no query rewriting, no LLM in the retrieval path — ranking is deterministic.
+  (The QA layer adds an LLM *on top* of retrieval — answers and their evaluation live in
+  `qa/` and `eval/qa/` and never feed back into ranking.)
 - Markdown only: no PDF, HTML, code-symbol or image ingestion.
 - The MCP endpoint has **no authentication**: expose it only on a trusted network or overlay.
 - Single-host, single-writer: the indexer takes a lock; concurrent indexing of one corpus is

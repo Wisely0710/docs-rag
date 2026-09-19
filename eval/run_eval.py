@@ -29,8 +29,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import re
-import subprocess
 import sys
 import time
 from collections.abc import Sequence
@@ -38,7 +36,19 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-INDEXER = REPO_ROOT / "indexer.py"
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from eval.evalutil import (
+    configure_env,
+    data_dir_for,
+    display_location,
+    load_jsonl,
+    percentile,
+    run_indexer,
+    shorten_hashes,
+)
+
 RECALL_AT = (1, 3, 5, 10)
 
 
@@ -66,67 +76,8 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def configure_env(args: argparse.Namespace) -> dict[str, str]:
-    """Point the service modules at this run's corpus (their config is read at import time)."""
-    env = dict(os.environ)
-    env["RAG_DIR"] = str(Path(args.rag_dir).resolve())
-    env["RAG_CORPUS"] = args.corpus
-    env.pop("RAG_CORPUS_DIR", None)  # the corpus_dir declared in corpora.json must win
-    if args.backend != "none":
-        env["RAG_EMBED_BACKEND"] = args.backend
-    for key in ("RAG_DIR", "RAG_CORPUS", "RAG_EMBED_BACKEND"):
-        if key in env:
-            os.environ[key] = env[key]
-    os.environ.pop("RAG_CORPUS_DIR", None)
-    return env
-
-
-def data_dir_for(rag_dir: Path, corpus: str) -> Path:
-    """The corpus's data_dir, as declared in corpora.json (falls back to data-<corpus>)."""
-    try:
-        spec = json.loads((rag_dir / "corpora.json").read_text(encoding="utf-8"))[corpus]
-        return rag_dir / str(spec["data_dir"])
-    except (OSError, ValueError, KeyError, TypeError):
-        return rag_dir / f"data-{corpus}"
-
-
-def run_indexer(env: dict[str, str]) -> str:
-    proc = subprocess.run(
-        [sys.executable, str(INDEXER)],
-        cwd=REPO_ROOT,
-        env=env,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if proc.returncode != 0:
-        sys.stderr.write(proc.stdout + proc.stderr)
-        raise SystemExit(f"indexer failed with exit code {proc.returncode}")
-    return proc.stdout.strip()
-
-
 def load_golden(path: Path) -> list[dict[str, Any]]:
-    rows: list[dict[str, Any]] = []
-    seen: set[str] = set()
-    for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        line = line.strip()
-        if not line or line.startswith("//"):
-            continue
-        try:
-            row = json.loads(line)
-        except ValueError as exc:
-            raise SystemExit(f"{path}:{lineno}: not valid JSON ({exc})") from exc
-        for key in ("id", "query", "expected"):
-            if not row.get(key):
-                raise SystemExit(f"{path}:{lineno}: missing {key!r}")
-        if row["id"] in seen:
-            raise SystemExit(f"{path}:{lineno}: duplicate id {row['id']!r}")
-        seen.add(row["id"])
-        row.setdefault("family", "all")
-        rows.append(row)
-    if not rows:
-        raise SystemExit(f"{path}: no golden rows")
-    return rows
+    return load_jsonl(path, required=("id", "query", "expected"))
 
 
 def check_labels(rows: list[dict[str, Any]], corpus_dir: Path) -> list[str]:
@@ -141,14 +92,6 @@ def check_labels(rows: list[dict[str, Any]], corpus_dir: Path) -> list[str]:
         if evidence and evidence.lower() not in target.read_text(encoding="utf-8", errors="replace").lower():
             warnings.append(f"{row['id']}: evidence {evidence!r} not found in {row['expected']}")
     return warnings
-
-
-def percentile(values: list[float], fraction: float) -> float:
-    if not values:
-        return 0.0
-    ordered = sorted(values)
-    index = min(len(ordered) - 1, max(0, round(fraction * (len(ordered) - 1))))
-    return ordered[index]
 
 
 def evaluate(rows: list[dict[str, Any]], k: int) -> dict[str, Any]:
@@ -206,19 +149,6 @@ def family_metrics(results: list[dict[str, Any]], k: int) -> dict[str, dict[str,
             "mrr": round(sum(1.0 / rank for rank in ranks if rank) / len(ranks), 4),
         }
     return out
-
-
-def display_location(rag_dir: Path) -> str:
-    """A publishable description of where the corpus lives (no absolute user paths)."""
-    try:
-        return str(rag_dir.relative_to(REPO_ROOT))
-    except ValueError:
-        return f"<RAG_DIR>/{rag_dir.name}"
-
-
-def shorten_hashes(text: str) -> str:
-    """Trim 40-char hex digests to 8 chars: scanners read them as high-entropy strings."""
-    return re.sub(r"\b[0-9a-f]{40}\b", lambda match: match.group(0)[:8], text)
 
 
 def markdown_report(
@@ -291,7 +221,11 @@ def markdown_report(
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv if argv is not None else sys.argv[1:])
-    env = configure_env(args)
+    env = configure_env(
+        rag_dir=Path(args.rag_dir),
+        corpus=args.corpus,
+        embed_backend=None if args.backend == "none" else args.backend,
+    )
     rag_dir = Path(args.rag_dir).resolve()
     golden = Path(args.golden)
 

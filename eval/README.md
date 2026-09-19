@@ -5,6 +5,10 @@ the real `indexer.py`, answers a labelled query set through the real
 `searchlib.retrieve`, and reports recall@k, MRR and query latency. Everything the
 report claims can be reproduced with the commands below.
 
+Answer quality has its own harness on top of the same retrieval path: `qa/answer.py`
+produces cited answers, `eval/qa/run_qa_eval.py` scores them with LLM-as-judge(s) —
+method, numbers and limits in [`qa/README.md`](qa/README.md).
+
 ## Corpus
 
 The published results in [`report-book.md`](report-book.md) use

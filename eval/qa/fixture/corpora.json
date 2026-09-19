@@ -1,0 +1,10 @@
+{
+  "qa-fixture": {
+    "corpus_dir": "corpus",
+    "data_dir": "data",
+    "top_files": [],
+    "doc_root_files": [],
+    "roots": ["."],
+    "exclude_dirs": []
+  }
+}
