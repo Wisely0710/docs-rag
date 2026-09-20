@@ -29,8 +29,17 @@ data-<corpus>/     index.sqlite  (+ .index.lock)
   score calibration between the two rankers.
 - **MCP tools** — `retrieve(query, k)` and `corpus_status()` over streamable HTTP, so any
   MCP-capable agent can query the corpus; `ragquery.py` does the same from a shell.
-- **Query metering** — every tool call appends one line to `logs/queries-<corpus>.log`
+- **Query metering** — every tool call appends one line to `<RAG_DIR>/logs/queries-<corpus>.log`
   (best-effort; never blocks retrieval).
+- **Run traces** — the same calls also append a JSON record to
+  `<RAG_DIR>/logs/traces-<corpus>.jsonl` using the OpenTelemetry GenAI attribute names
+  (`gen_ai.request.model`, `gen_ai.usage.input_tokens`, …, service facts under `docs_rag.*`).
+  Prompts and answers are stored as SHA-256 digests unless `RAG_TRACE_CONTENT=1`;
+  `python tracing.py --report|--check|--export-otel|--prune-days` summarises, gates,
+  exports span-shaped JSONL, and prunes the retention window.
+- **Fail-closed exposure** — loopback by default; a non-loopback bind without
+  `RAG_AUTH_TOKEN` refuses to start, and Host/Origin validation is on for every HTTP
+  transport (`netguard.py`).
 
 ## Quickstart (no model server required)
 
@@ -91,6 +100,49 @@ repository, so nothing is fetched here. Run it per corpus from cron, e.g.
 
 `deploy/com.example.docs-rag.plist` is a launchd template for one corpus instance; replace
 the placeholders and bootstrap it per corpus (`RAG_CORPUS` and `RAG_PORT` differ per agent).
+
+## Exposure and observability
+
+**Exposure.** The MCP endpoint carries no caller identity, so the transport refuses to be
+reachable by accident:
+
+```bash
+RAG_HOST=0.0.0.0 .venv/bin/python serve.py                     # refused: UnsafeBindingError, exit 1
+RAG_HOST=0.0.0.0 RAG_AUTH_TOKEN=... .venv/bin/python serve.py  # exposed on purpose
+```
+
+The default bind is `127.0.0.1`; any other host requires a bearer token or the process
+exits with the reason. `RAG_AUTH_TOKEN` is a **shared secret for a trusted network**, not
+OAuth — the endpoint has no authorization server, so keep it on your overlay/VPN and
+rotate the token like any other credential. Host/Origin (DNS-rebinding) validation is
+enabled on every HTTP transport, and `probe.py` reads `RAG_AUTH_TOKEN` when you need to
+check a token-protected deployment.
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `RAG_HOST` | `127.0.0.1` | bind address; anything non-loopback requires `RAG_AUTH_TOKEN` |
+| `RAG_AUTH_TOKEN` | unset | bearer token required on every HTTP request |
+| `RAG_TRACE_DIR` | `<RAG_DIR>/logs` | where metering lines and traces are written |
+| `RAG_TRACE_CONTENT` | unset | `1` stores raw prompt/answer text in traces (default: digests only) |
+| `RAG_TRACE_KEEP_DAYS` | `14` | retention window used by `tracing.py --prune-days` |
+| `RAG_PRICE_INPUT_PER_MTOK` / `RAG_PRICE_OUTPUT_PER_MTOK` | unset | price table for the cost estimate |
+| `RAG_COST_ALERT_USD` | unset | cost ceiling checked by `tracing.py --check` |
+
+**Observability.** The trace layer is dependency-free JSONL, so the report and the export
+work with no model server and no corpus config:
+
+```bash
+python tracing.py --report   logs/traces-<corpus>.jsonl    # counts, p50/p95, tokens, cost
+python tracing.py --check    logs/traces-<corpus>.jsonl    # threshold violations, exit 1
+python tracing.py --export-otel logs/traces-<corpus>.jsonl spans.jsonl
+python tracing.py --prune-days 14                          # retention window
+```
+
+The thresholds live in the repo (`tracing.violations`: error rate, p95 latency, token
+total, cost ceiling), so a regression is a failing command rather than a dashboard nobody
+reads; the operator of the host owns them, and the same cron entry that runs `refresh.sh`
+is the place to run `--check` and `--prune-days`. The GenAI attribute names mean an
+exporter can lift these records into real spans without a translation table.
 
 ## Clients
 
@@ -176,7 +228,9 @@ gates.
   (The QA layer adds an LLM *on top* of retrieval — answers and their evaluation live in
   `qa/` and `eval/qa/` and never feed back into ranking.)
 - Markdown only: no PDF, HTML, code-symbol or image ingestion.
-- The MCP endpoint has **no authentication**: expose it only on a trusted network or overlay.
+- The MCP endpoint has **no authentication of its own**: a loopback bind needs none, any
+  other bind requires `RAG_AUTH_TOKEN` (a shared secret, not OAuth) — expose it only on a
+  trusted network or overlay.
 - Single-host, single-writer: the indexer takes a lock; concurrent indexing of one corpus is
   skipped rather than queued.
 - No deletion of corpora, no index migration between schema versions (delete `index.sqlite`

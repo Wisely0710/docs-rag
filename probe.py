@@ -5,6 +5,9 @@ Usage: python probe.py <url> [queries-file]
   url           e.g. http://127.0.0.1:8765/mcp
   queries-file  optional, one query per line; otherwise a small generic set is used.
 
+Set RAG_AUTH_TOKEN when the deployment serves a non-loopback bind (netguard.py requires
+a bearer token there); with the token unset the probe talks to a loopback service.
+
 Reports per-query top-1 path, latency percentiles, and index stats. Kept free of
 corpus-specific queries so this file carries no project terminology: keep deployment
 query lists in a separate, untracked file and pass it as the second argument.
@@ -12,6 +15,7 @@ query lists in a separate, untracked file and pass it as the second argument.
 from __future__ import annotations
 
 import asyncio
+import os
 import pathlib
 import statistics
 import sys
@@ -42,8 +46,14 @@ async def main() -> None:
     from mcp.client import ClientSession
     from mcp.client.streamable_http import streamable_http_client
 
+    token = os.environ.get("RAG_AUTH_TOKEN", "").strip()
+    headers = {"Authorization": f"Bearer {token}"} if token else {}
+
+    import httpx2
+
     async with (
-        streamable_http_client(url) as (read_stream, write_stream),
+        httpx2.AsyncClient(headers=headers) as http_client,
+        streamable_http_client(url, http_client=http_client) as (read_stream, write_stream),
         ClientSession(read_stream, write_stream) as session,
     ):
         await session.initialize()

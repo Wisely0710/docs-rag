@@ -24,14 +24,14 @@ ENV_PATH = RAG_DIR / ".env"
 RAG_CORPUS = os.environ.get("RAG_CORPUS", "").strip()
 if not RAG_CORPUS:
     raise RuntimeError(
-        "RAG_CORPUS is not set; this service is multi-tenant and refuses to guess. "
+        "RAG_CORPUS is not set; this deployment serves one corpus per instance and refuses to guess. "
         f"Set RAG_CORPUS to one of the corpora in {RAG_DIR / 'corpora.json'}"
     )
 
 # Corpus layout/scope/presentation is DATA, not code: every corpus is declared in
-# corpora.json (schema: corpora.example.json). Nothing tenant-specific lives in this
+# corpora.json (schema: corpora.example.json). Nothing corpus-specific lives in this
 # module, so adding a corpus — or retargeting one — never requires editing shared code,
-# and one tenant's change cannot affect another.
+# and one corpus's change cannot affect another.
 _REQUIRED_KEYS = ("corpus_dir", "data_dir", "top_files", "doc_root_files", "roots", "exclude_dirs")
 
 
@@ -76,7 +76,20 @@ CORPUS_EXCLUDE_DIRS = tuple(str(item) for item in _spec["exclude_dirs"])
 # git origin refresh.sh clones from when the corpus is git-backed.
 CORPUS_GIT_ORIGIN_REPO = str(_spec.get("git_origin_repo") or "")
 SERVER_NAME = os.environ.get("RAG_SERVER_NAME") or str(_spec.get("server_name") or f"{RAG_CORPUS}-docs-rag")
-SYSTEM_NOTE = os.environ.get("RAG_SYSTEM_NOTE") or str(_spec.get("system_note") or "回答引用時請標明回傳的檔案路徑。")
+
+
+def single_line(text: object, limit: int = 200) -> str:
+    """Collapse to one whitespace-normalised line, truncated.
+
+    Presentation strings from corpora.json are interpolated into the MCP **tool
+    description** — a position the consuming agent reads as instructions. Keeping them
+    single-line and bounded removes the easy injection shape (embedded newlines, a whole
+    instruction block) without pretending to sanitise the corpus itself.
+    """
+    return " ".join(str(text).split())[:limit]
+
+
+SYSTEM_NOTE = single_line(os.environ.get("RAG_SYSTEM_NOTE") or _spec.get("system_note") or "回答引用時請標明回傳的檔案路徑。")
 
 DB_PATH = DATA_DIR / "index.sqlite"
 

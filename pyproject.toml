@@ -23,6 +23,8 @@ files = [
     "searchlib.py",
     "ragquery.py",
     "serve.py",
+    "netguard.py",
+    "tracing.py",
     "qa/llm.py",
     "qa/answer.py",
     "qa/judge.py",

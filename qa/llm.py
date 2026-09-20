@@ -185,7 +185,7 @@ class StubClient:
         if not block:
             return f"{ABSTAIN_MARKER}\nstub backend: no excerpts were provided"
         question = user.split("Question:", 1)[-1].split("\n", 1)[0]
-        context = user.split("Documentation excerpts:", 1)[-1]
+        context = user.split("Documentation excerpts", 1)[-1]
         if not set(_WORD_RE.findall(question.lower())) & set(_WORD_RE.findall(context.lower())):
             return f"{ABSTAIN_MARKER}\nstub backend: no lexical overlap with the excerpts"
         first_line = block.group(2).strip().split("\n", 1)[0]

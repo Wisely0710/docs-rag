@@ -201,6 +201,12 @@ support (`docsrag-8`: "the corpus is versioned by name").
   kappa 1.0 by construction — a high kappa with degenerate labels is not evidence of a
   good judge.
 - **Small corpus, small golden set.** Nine documents and 36 questions say nothing about
-  behaviour on large or adversarial corpora.
+  behaviour on large or adversarial corpora — including the injection cases the answer
+  prompt now defends against (they are asserted at the prompt/contract level in
+  `tests/test_injection_guard.py`, not measured against a live model).
+- **The published run predates the data-marking prompt (2026-09-20).** The answer prompt
+  now wraps the excerpts in explicit data markers and repeats the rule *after* them; the
+  2026-09-19 numbers in this directory were produced by the earlier prompt. Re-run
+  `run_qa_eval.py` to refresh them; the offline CI gate is unaffected (stub backend).
 - **`zh` rows are informational.** The corpus is mostly English; Chinese questions
   exercise the cross-lingual path that the retrieval report already flags as weak.

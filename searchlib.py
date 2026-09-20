@@ -8,14 +8,13 @@ import re
 import sqlite3
 import struct
 import time
-from pathlib import Path
 from typing import Any
 
+import tracing
 from ragconfig import DB_PATH, EMBED_DIM, embed_texts
 
 _RRF_K = 60
 _NP: Any = None
-_QUERY_LOG_DIR = Path(__file__).resolve().parent / "logs"
 
 
 def log_query(
@@ -29,8 +28,10 @@ def log_query(
 ) -> None:
     """查詢級計量：一行一呼叫（tool／caller／k／hits／latency／query 前 200 字）。
 
-    落 `logs/queries-<RAG_CORPUS|default>.log`（per-corpus，不與其他語料混檔）。
-    best-effort：寫入失敗（權限／磁碟）一律靜默略過——RAG 為定位工具，計量不得影響檢索。
+    落 `<LOG_DIR>/queries-<RAG_CORPUS|default>.log`（per-corpus，不與其他語料混檔；
+    LOG_DIR = `RAG_TRACE_DIR` 或服務的 `logs/`，與 `tracing.py` 同一處——不再寫進
+    checkout）。best-effort：寫入失敗（權限／磁碟）一律靜默略過——RAG 為定位工具，
+    計量不得影響檢索。
     """
     try:
         corpus = os.environ.get("RAG_CORPUS", "default")
@@ -47,8 +48,9 @@ def log_query(
             parts.append(f"ms={ms:.0f}")
         if query:
             parts.append('query="' + " ".join(query.split())[:200] + '"')
-        _QUERY_LOG_DIR.mkdir(parents=True, exist_ok=True)
-        with open(_QUERY_LOG_DIR / f"queries-{corpus}.log", "a", encoding="utf-8") as fh:
+        log_dir = tracing.trace_dir()
+        log_dir.mkdir(parents=True, exist_ok=True)
+        with open(log_dir / f"queries-{corpus}.log", "a", encoding="utf-8") as fh:
             fh.write("\t".join(parts) + "\n")
     except OSError:
         pass
@@ -78,6 +80,32 @@ def _connect() -> sqlite3.Connection:
     return db
 
 
+def _load_numpy() -> Any | None:
+    """numpy when importable, else None. A missing ranker must degrade, not raise."""
+    try:
+        import numpy as np
+    except ImportError:
+        return None
+    return np
+
+
+def _sqlite_vec_available() -> bool:
+    try:
+        import sqlite_vec  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
+def _vector_rank_available() -> bool:
+    """True when the vector ranker can run at all (sqlite-vec importable or numpy present).
+
+    When neither is importable the service is FTS-only — the third fallback level, which
+    requirements.txt has always claimed and which used to raise ImportError instead.
+    """
+    return _sqlite_vec_available() or _load_numpy() is not None
+
+
 def _vector_top(db: sqlite3.Connection, qvec: list[float], n: int) -> list[tuple[int, float]]:
     if _vec_ok(db):
         blob = struct.pack(f"<{EMBED_DIM}f", *qvec)
@@ -89,7 +117,10 @@ def _vector_top(db: sqlite3.Connection, qvec: list[float], n: int) -> list[tuple
             )
         ]
     # numpy brute-force fallback (corpus is small: <10k chunks)
-    import numpy as np  # type: ignore
+    np = _load_numpy()
+    if np is None:
+        # No vector ranker at all: retrieve() falls back to FTS-only ranking.
+        return []
 
     global _NP
     sig = db.execute("SELECT COUNT(*), COALESCE(MAX(id),0) FROM chunks").fetchone()
@@ -143,14 +174,18 @@ def _fts_top(db: sqlite3.Connection, query: str, n: int) -> list[int]:
 def retrieve(query: str, k: int = 5, caller: str = "direct") -> list[dict]:
     """Return up to k dicts: {path, seq, text, score} ranked by RRF over vector+FTS.
 
-    每次呼叫記一行查詢計量（`log_query`；best-effort，失敗不影響結果）。
+    每次呼叫記一行查詢計量（`log_query`）與一筆 trace（`tracing.record`）——兩者皆
+    best-effort，失敗不影響結果。trace 讓單次呼叫可事後重建（rankers／paths／latency；
+    query 只存雜湊，除非 `RAG_TRACE_CONTENT=1`）。
     """
     started = time.monotonic()
     k = max(1, min(int(k), 10))
     qvec = embed_texts([query])[0][0]
     qvec = _norm(qvec)
     pool = max(15, k * 4)
-
+    rankers = "vector+fts" if _vector_rank_available() else "fts_only"
+    out: list[dict] = []
+    error: str | None = None
     db = _connect()
     try:
         vt = _vector_top(db, qvec, pool)
@@ -162,7 +197,7 @@ def retrieve(query: str, k: int = 5, caller: str = "direct") -> list[dict]:
             scores[rowid] = scores.get(rowid, 0.0) + 1.0 / (_RRF_K + rank + 1)
         ranked = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)[:k]
         if not ranked:
-            return []
+            return out
         qmarks = ",".join("?" * len(ranked))
         rows = {
             rid: (path, seq, text)
@@ -171,7 +206,6 @@ def retrieve(query: str, k: int = 5, caller: str = "direct") -> list[dict]:
                 [rid for rid, _ in ranked],
             )
         }
-        out = []
         seen = set()
         for rid, score in ranked:
             row = rows.get(rid)
@@ -183,9 +217,27 @@ def retrieve(query: str, k: int = 5, caller: str = "direct") -> list[dict]:
             seen.add(key)
             out.append({"path": row[0], "seq": row[1], "text": row[2], "score": round(score, 5)})
         return out
+    except Exception as exc:
+        error = type(exc).__name__
+        raise
     finally:
-        _hits = len(out) if "out" in locals() else 0  # 早退（無結果）路徑無 out → 0
-        log_query("retrieve", caller=caller, query=query, k=k, hits=_hits, ms=(time.monotonic() - started) * 1000)
+        elapsed_ms = (time.monotonic() - started) * 1000
+        log_query("retrieve", caller=caller, query=query, k=k, hits=len(out), ms=elapsed_ms)
+        tracing.record(
+            "retrieval",
+            {
+                "docs_rag.caller": caller,
+                "docs_rag.k": k,
+                "docs_rag.hits": len(out),
+                "docs_rag.rankers": rankers,
+                "docs_rag.paths": [hit["path"] for hit in out],
+                "docs_rag.error": error is not None,
+                **({"docs_rag.error_type": error} if error else {}),
+                **tracing.describe_content(query, field="query"),
+            },
+            corpus=os.environ.get("RAG_CORPUS"),
+            latency_ms=elapsed_ms,
+        )
         db.close()
 
 

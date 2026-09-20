@@ -56,12 +56,18 @@ def _build_workspace(tmp_path: pathlib.Path) -> None:
     (corpus / "docs" / "notes" / "archive" / "old.md").write_text("# Excluded\n\nNever indexed.\n", encoding="utf-8")
 
 
-def _run(args: list[str], tmp_path: pathlib.Path, stdin: str | None = None) -> subprocess.CompletedProcess[str]:
+def _run(
+    args: list[str],
+    tmp_path: pathlib.Path,
+    stdin: str | None = None,
+    extra_env: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess[str]:
     env = {
         **os.environ,
         "RAG_DIR": str(tmp_path),
         "RAG_CORPUS": "demo",
         "RAG_EMBED_BACKEND": "stub",
+        **(extra_env or {}),
     }
     return subprocess.run(
         [sys.executable, *args],
@@ -97,3 +103,31 @@ def test_new_corpus_is_indexed_and_retrievable(tmp_path: pathlib.Path) -> None:
     top = _run(["ragquery.py", "-k", "1"], tmp_path, stdin="top-level files listed in the corpus config\n")
     assert top.returncode == 0, top.stderr
     assert "AGENTS.md" in top.stdout
+
+
+def test_retrieval_falls_back_to_fts_only_without_the_vector_rankers(tmp_path: pathlib.Path) -> None:
+    """Neither sqlite-vec nor numpy importable: rank, don't raise (requirements.txt promises this)."""
+    _build_workspace(tmp_path)
+    blocker = tmp_path / "blocked-rankers"
+    blocker.mkdir()
+    for name in ("numpy", "sqlite_vec"):
+        (blocker / f"{name}.py").write_text("raise ImportError('blocked by the FTS-only test')\n", encoding="utf-8")
+    pythonpath = f"{blocker}{os.pathsep}{os.environ.get('PYTHONPATH', '')}"
+    extra_env = {"PYTHONPATH": pythonpath}
+
+    indexed = _run(["indexer.py"], tmp_path, extra_env=extra_env)
+    assert indexed.returncode == 0, indexed.stderr
+
+    answer = _run(["ragquery.py", "-k", "2"], tmp_path, stdin="reciprocal rank fusion RRF k=60\n", extra_env=extra_env)
+    assert answer.returncode == 0, answer.stderr
+    assert "docs/notes/retrieval.md" in answer.stdout
+
+    records = [
+        json.loads(line)
+        for line in (tmp_path / "logs" / "traces-demo.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    retrievals = [row for row in records if row["kind"] == "retrieval"]
+    assert retrievals, "the retrieval trace must be written next to the service logs"
+    assert {row["docs_rag.rankers"] for row in retrievals} == {"fts_only"}
+    assert all(row["docs_rag.error"] is False for row in retrievals)

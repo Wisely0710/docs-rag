@@ -80,6 +80,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             "answer": answer.text,
             "abstained": answer.abstained,
             "citations": answer.citations,
+            "validated_citations": answer.validated_citations,
+            "rejected_citations": answer.rejected_citations,
             "model": client.model,
             "sources": [{"path": hit["path"], "seq": hit["seq"], "score": hit["score"]} for hit in answer.hits],
         }
@@ -89,6 +91,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(answer.text)
     if answer.citations:
         print("\ncitations: " + ", ".join(f"`{path}`" for path in answer.citations))
+    if answer.rejected_citations:
+        print(
+            "\nwarning: citations not present in the retrieved excerpts (treated as untrusted): "
+            + ", ".join(f"`{path}`" for path in answer.rejected_citations)
+        )
     print(f"\nsources ({client.model}, ranked):")
     for rank, hit in enumerate(answer.hits, 1):
         print(f"  {rank}. {hit['path']} (chunk {hit['seq']}, score {hit['score']})")
