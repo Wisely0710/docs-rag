@@ -5,6 +5,7 @@ Version-controlled; corpus scope/layout comes from corpora.json (see load_corpor
 One service instance per corpus; select with RAG_CORPUS (mandatory — the service
 refuses to guess rather than silently serving the wrong corpus).
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -89,7 +90,9 @@ def single_line(text: object, limit: int = 200) -> str:
     return " ".join(str(text).split())[:limit]
 
 
-SYSTEM_NOTE = single_line(os.environ.get("RAG_SYSTEM_NOTE") or _spec.get("system_note") or "回答引用時請標明回傳的檔案路徑。")
+SYSTEM_NOTE = single_line(
+    os.environ.get("RAG_SYSTEM_NOTE") or _spec.get("system_note") or "回答引用時請標明回傳的檔案路徑。"
+)
 
 DB_PATH = DATA_DIR / "index.sqlite"
 

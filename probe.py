@@ -12,6 +12,7 @@ Reports per-query top-1 path, latency percentiles, and index stats. Kept free of
 corpus-specific queries so this file carries no project terminology: keep deployment
 query lists in a separate, untracked file and pass it as the second argument.
 """
+
 from __future__ import annotations
 
 import asyncio

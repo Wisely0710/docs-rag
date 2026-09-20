@@ -114,7 +114,9 @@ def test_prune_removes_only_files_outside_the_retention_window(tmp_path: pathlib
     assert fresh.exists() and other.exists() and not old.exists()
 
 
-def test_summarize_counts_kinds_latency_errors_and_tokens(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_summarize_counts_kinds_latency_errors_and_tokens(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setenv("RAG_PRICE_INPUT_PER_MTOK", "1.0")
     monkeypatch.setenv("RAG_PRICE_OUTPUT_PER_MTOK", "4.0")
     path = tmp_path / "traces-demo.jsonl"

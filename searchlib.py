@@ -1,4 +1,5 @@
 """Hybrid retrieval: sqlite-vec (or numpy fallback) + FTS5 trigram, RRF merge."""
+
 from __future__ import annotations
 
 import datetime

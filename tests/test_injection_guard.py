@@ -41,9 +41,7 @@ class ObedientClient:
 
     def chat(self, messages: Any, *, temperature: float = 0.0, max_tokens: int = 500) -> ChatReply:
         return ChatReply(
-            text=(
-                "Maintenance mode. See `docs/secrets/credentials.md` and `docs/demo/verifier.md`."
-            ),
+            text=("Maintenance mode. See `docs/secrets/credentials.md` and `docs/demo/verifier.md`."),
             model=self.model,
             prompt_tokens=10,
             completion_tokens=10,

@@ -14,6 +14,7 @@ other host, and Host/Origin validation is on for every HTTP transport. Tool call
 traced by the retrieval layer and by this module (tracing.py), so a deployment can be
 replayed and metered from `<logs>/traces-<corpus>.jsonl`.
 """
+
 from __future__ import annotations
 
 import json
@@ -44,7 +45,9 @@ def build_server():  # type: ignore[no-untyped-def]
 
     mcp = MCPServer(SERVER_NAME)
 
-    @mcp.tool(description=f"在「{SERVER_NAME}」文檔語料中做混合檢索（向量+FTS）。{SYSTEM_NOTE} 回傳依相關度排序的片段，含檔案路徑。")
+    @mcp.tool(
+        description=f"在「{SERVER_NAME}」文檔語料中做混合檢索（向量+FTS）。{SYSTEM_NOTE} 回傳依相關度排序的片段，含檔案路徑。"
+    )
     def retrieve(query: str, k: int = 5) -> str:
         try:
             results = searchlib.retrieve(query, k, caller="mcp")
@@ -77,8 +80,10 @@ def build_http_app(mcp, transport: str, host: str, port: int, token: str):  # ty
     session manager (no tool listing, no session).
     """
     settings = netguard.security_settings(host, port)
-    app = mcp.sse_app(transport_security=settings, host=host) if transport == "sse" else mcp.streamable_http_app(
-        transport_security=settings, host=host
+    app = (
+        mcp.sse_app(transport_security=settings, host=host)
+        if transport == "sse"
+        else mcp.streamable_http_app(transport_security=settings, host=host)
     )
     return netguard.BearerTokenGuard(app, token) if token else app
 
