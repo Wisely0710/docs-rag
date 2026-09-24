@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 import pathlib
+import sys
 
 import pytest
 
@@ -19,6 +20,13 @@ import ragconfig as cfg
 import tracing
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+
+@pytest.fixture(autouse=True)
+def _no_cost_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Keep the developer's shell out of these tests: thresholds come from the test only."""
+    for name in ("RAG_PRICE_INPUT_PER_MTOK", "RAG_PRICE_OUTPUT_PER_MTOK", "RAG_COST_ALERT_USD"):
+        monkeypatch.delenv(name, raising=False)
 
 
 def test_trace_dir_is_the_service_log_dir_not_the_checkout() -> None:
@@ -154,3 +162,72 @@ def test_violations_flag_threshold_breaches_only() -> None:
     assert any("error rate" in item for item in found)
     assert any("p95" in item for item in found)
     assert any("token total" in item for item in found)
+
+
+def test_check_concatenates_the_files_into_one_window(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    first = tmp_path / "traces-a.jsonl"
+    second = tmp_path / "traces-b.jsonl"
+    row = {"kind": "answer", "latency_ms": 100.0, "gen_ai.usage.input_tokens": 10}
+    for path in (first, second):
+        path.write_text(json.dumps(row) + "\n", encoding="utf-8")
+
+    argv = ["tracing.py", "--check", str(first), "--max-total-tokens", "15"]
+    monkeypatch.setattr(sys, "argv", argv)
+    assert tracing._main() == 0
+
+    monkeypatch.setattr(sys, "argv", ["tracing.py", "--check", str(first), str(second), "--max-total-tokens", "15"])
+    assert tracing._main() == 1
+    assert "VIOLATION: token total 20 exceeds 15" in capsys.readouterr().out
+
+
+def test_check_without_thresholds_passes_a_healthy_window(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    path = tmp_path / "traces-demo.jsonl"
+    rows = [
+        {"kind": "retrieval", "latency_ms": 20.0, "docs_rag.error": False},
+        {"kind": "answer", "latency_ms": 100.0, "docs_rag.error": False, "gen_ai.usage.input_tokens": 10},
+    ]
+    path.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(sys, "argv", ["tracing.py", "--check", str(path)])
+    assert tracing._main() == 0
+    assert capsys.readouterr().out == ""
+
+
+def test_check_enforces_an_explicit_token_total(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    path = tmp_path / "traces-demo.jsonl"
+    row = {"kind": "answer", "gen_ai.usage.input_tokens": 100, "gen_ai.usage.output_tokens": 20}
+    path.write_text(json.dumps(row) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(sys, "argv", ["tracing.py", "--check", str(path)])
+    assert tracing._main() == 0  # no flag: the function default (no token ceiling) applies
+
+    monkeypatch.setattr(sys, "argv", ["tracing.py", "--check", str(path), "--max-total-tokens", "50"])
+    assert tracing._main() == 1
+    assert "VIOLATION: token total 120 exceeds 50" in capsys.readouterr().out
+
+
+def test_check_threshold_flags_override_the_defaults(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    path = tmp_path / "traces-demo.jsonl"
+    rows = [
+        {"kind": "answer", "latency_ms": 6000.0, "docs_rag.error": True},
+        {"kind": "answer", "latency_ms": 100.0, "docs_rag.error": False},
+    ]
+    path.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(sys, "argv", ["tracing.py", "--check", str(path)])
+    assert tracing._main() == 1  # defaults: 50% error rate and 6000ms p95 both breach
+    assert "error rate" in capsys.readouterr().out
+
+    monkeypatch.setattr(
+        sys, "argv", ["tracing.py", "--check", str(path), "--max-error-rate", "0.9", "--max-p95-ms", "9000"]
+    )
+    assert tracing._main() == 0
+    assert capsys.readouterr().out == ""

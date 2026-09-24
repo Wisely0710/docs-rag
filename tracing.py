@@ -303,7 +303,15 @@ def _main() -> int:
     parser.add_argument("--report", metavar="TRACE_FILE", help="print a usage/latency summary")
     parser.add_argument("--export-otel", nargs=2, metavar=("TRACE_FILE", "OUT_FILE"), help="write span-shaped JSONL")
     parser.add_argument("--prune-days", type=int, metavar="N", help="delete trace files older than N days")
-    parser.add_argument("--check", metavar="TRACE_FILE", help="print threshold violations (exit 1 when any)")
+    parser.add_argument(
+        "--check",
+        nargs="+",
+        metavar="TRACE_FILE",
+        help="print threshold violations over one window (all files, in order; exit 1 when any)",
+    )
+    parser.add_argument("--max-error-rate", type=float, metavar="RATE", help="error-rate ceiling for --check")
+    parser.add_argument("--max-p95-ms", type=float, metavar="MS", help="p95 latency ceiling for --check")
+    parser.add_argument("--max-total-tokens", type=int, metavar="N", help="token-total ceiling for --check")
     args = parser.parse_args()
 
     if args.report:
@@ -313,8 +321,17 @@ def _main() -> int:
     if args.prune_days is not None:
         print(f"pruned: {prune(args.prune_days)}")
     if args.check:
-        rows = [row for row in read_records(args.check) if row.get("docs_rag.corpus")]
-        found = violations(rows)
+        # One window: the files are concatenated in the order given, so a rolling window
+        # may be checked across several files without a separate merge step.
+        rows = [row for path in args.check for row in read_records(path)]
+        limits: dict[str, Any] = {}
+        if args.max_error_rate is not None:
+            limits["max_error_rate"] = args.max_error_rate
+        if args.max_p95_ms is not None:
+            limits["max_p95_ms"] = args.max_p95_ms
+        if args.max_total_tokens is not None:
+            limits["max_total_tokens"] = args.max_total_tokens
+        found = violations(rows, **limits)
         for item in found:
             print(f"VIOLATION: {item}")
         return 1 if found else 0

@@ -134,15 +134,20 @@ work with no model server and no corpus config:
 ```bash
 python tracing.py --report   logs/traces-<corpus>.jsonl    # counts, p50/p95, tokens, cost
 python tracing.py --check    logs/traces-<corpus>.jsonl    # threshold violations, exit 1
+python tracing.py --check    logs/traces-*.jsonl           # several files, one window
+python tracing.py --check    logs/traces-*.jsonl --max-error-rate 0.1 --max-p95-ms 3000 --max-total-tokens 500000
 python tracing.py --export-otel logs/traces-<corpus>.jsonl spans.jsonl
 python tracing.py --prune-days 14                          # retention window
 ```
 
 The thresholds live in the repo (`tracing.violations`: error rate, p95 latency, token
 total, cost ceiling), so a regression is a failing command rather than a dashboard nobody
-reads; the operator of the host owns them, and the same cron entry that runs `refresh.sh`
-is the place to run `--check` and `--prune-days`. The GenAI attribute names mean an
-exporter can lift these records into real spans without a translation table.
+reads; `--check` concatenates every file it is handed, in the order given, into that one
+window, and `--max-error-rate` / `--max-p95-ms` / `--max-total-tokens` override the
+defaults for a single run (unset means the default applies). The operator of the host owns
+them, and the same cron entry that runs `refresh.sh` is the place to run `--check` and
+`--prune-days`. The GenAI attribute names mean an exporter can lift these records into
+real spans without a translation table.
 
 ## Clients
 
